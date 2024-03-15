@@ -31,7 +31,18 @@ function addPlayerToTable(player) {
     if (tableSpot.username == undefined) {
       tableSpot.username = player.name;
       tableSpot.chips = player.chips;
-      //skicka iväg table till game
+      console.log(tableSpots);
+      break;
+    }
+  }
+}
+function removePlayerFromTable(player) {
+  for (var tableSpotKey in tableSpots) {
+    var tableSpot = tableSpots[tableSpotKey];
+    if (tableSpot.username == player) {
+      tableSpot.username = undefined;
+      //update database with chip amount
+      tableSpot.chips = undefined;
       console.log(tableSpots);
       break;
     }
@@ -73,13 +84,13 @@ io.on("connection", (socket) => {
       });
       if (uniqueName) {
         addAcount(username, email, password, startingchips);
-        socket.emit("signinsuccess");
+        socket.emit("signinsuccess", account.name);
       } else {
         console.log("name already exist");
       }
     });
   });
-  socket.on("startGame", () => {
-    socket.emit("updateTable", tableSpots);
+  socket.on("logout", (player) => {
+    removePlayerFromTable(player);
   });
 });
