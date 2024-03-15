@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+ <script src="/socket.io/socket.io.js"></script> 
+<body>
+<div class="form-container">
+    <h2>Login</h2>
+    <form>
+        <input id="username1" type="text" placeholder="Username" required>
+        <input id="pass1" type="password" placeholder="Password" required>
+        <button type="submit" onclick="login()">Login</button>
+    </form>
+    <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
+</div>
+
+<div class="form-container" style="display: none;">
+    <h2>Sign Up</h2>
+    <form>
+        <input id="username2" type="text" placeholder="Username" required>
+        <input id="email" type="email" placeholder="Email" required>
+        <input id="password2" type="password" placeholder="Password" required>
+        <button type="submit" onclick="signup()">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+</div>
+<img src="images/carddeck3-removebg-preview.png" id="cardDeck" alt="">
+    <div id="background"></div>
+    <canvas id="canvas" width="800" height="500" ></canvas>
+
+<script>
+     var socket = io(); 
+    const loginForm = document.querySelector('.form-container:nth-child(1)');
+    const signupForm = document.querySelector('.form-container:nth-child(2)');
+    const playingTable = document.getElementById('background');
+    const canvas = document.getElementById('canvas');
+     function login() { 
+        event.preventDefault();
+        let inputUsername = document.getElementById("username1"); 
+        let inputPassword = document.getElementById("pass1"); 
+        let username = inputUsername.value; 
+        let password = inputPassword.value; 
+        socket.emit("login",username,password)
+        };
+    function signup() { 
+        event.preventDefault();
+        let inputUsername = document.getElementById("username2"); 
+        let inputPassword = document.getElementById("password2"); 
+        let inputEmail = document.getElementById("email"); 
+        let username = inputUsername.value; 
+        let password = inputPassword.value; 
+        let email = inputEmail.value; 
+        socket.emit("signup",username,email,password)
+        };
+    socket.on("loginsuccess", () => {
+        togglelogin();
+        })
+    socket.on("signinsuccess", () => {
+        toggleForm();
+        }) 
+
+    function toggleForm() {
+        if (loginForm.style.display === 'none') {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+        } else {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+        }
+    }
+     function togglelogin() {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'none';
+        playingTable.style.display = 'block'
+        canvas.style.display = 'block'
+
+    }
+</script>
+
+</body>
+</html>
