@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poker Game</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/public/style.css">
 </head>
  <script src="/socket.io/socket.io.js"></script> 
 <body>
@@ -75,6 +75,7 @@
      function togglelogin() {
         loginForm.style.display = 'none';
         signupForm.style.display = 'none';
+        console.log(canvas)
         playingTable.style.display = 'block'
         canvas.style.display = 'block'
 
