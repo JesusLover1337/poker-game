@@ -1,0 +1,48 @@
+var tableSpots = {
+  tableSpot1: {
+    username: undefined,
+    chips: undefined,
+    hand: [],
+    card1posX: 150,
+    card1posY: 155,
+    card2posX: 185,
+    card2posY: 155,
+  },
+  tableSpot2: {
+    username: undefined,
+    chips: undefined,
+    hand: [],
+    card1posX: 150,
+    card1posY: 300,
+    card2posX: 185,
+    card2posY: 300,
+  },
+  tableSpot3: {
+    username: undefined,
+    chips: undefined,
+    hand: [],
+    card1posX: 570,
+    card1posY: 155,
+    card2posX: 605,
+    card2posY: 155,
+  },
+  tableSpot4: {
+    username: undefined,
+    chips: undefined,
+    hand: [],
+    card1posX: 570,
+    card1posY: 300,
+    card2posX: 605,
+    card2posY: 300,
+  },
+  tableSpot5: {
+    username: undefined,
+    chips: undefined,
+    hand: [],
+    card1posX: 370,
+    card1posY: 330,
+    card2posX: 405,
+    card2posY: 330,
+  },
+};
+exports.tableSpots = tableSpots;
