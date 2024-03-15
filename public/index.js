@@ -30,6 +30,7 @@ socket.on("loginsuccess", (name) => {
 socket.on("signinsuccess", () => {
   toggleForm();
 });
+socket.on("bettingRoundAction", () => {});
 
 function toggleForm() {
   if (loginForm.style.display === "none") {
@@ -45,7 +46,6 @@ function logout() {
   playingTable.style.display = "none";
   canvas.style.display = "none";
   logOutButton.style.display = "none";
-  //ta bort från table
   console.log(player);
   socket.emit("logout", player);
 }
