@@ -4,6 +4,7 @@ const signupForm = document.querySelector(".form-container:nth-child(2)");
 const playingTable = document.getElementById("background");
 const canvas = document.getElementById("canvas");
 const logOutButton = document.getElementById("logout");
+const bettingActions = document.getElementById("bettingActions");
 let player = undefined;
 function login(event) {
   event.preventDefault();
@@ -30,7 +31,20 @@ socket.on("loginsuccess", (name) => {
 socket.on("signinsuccess", () => {
   toggleForm();
 });
-socket.on("bettingRoundAction", () => {});
+function raiseAction() {
+  var amount = document.getElementById("raiseAmount").value;
+  bettingAction(amount);
+}
+function bettingAction(action) {
+  socket.emit("bettingAction", action);
+  bettingActions.style.display = "none";
+}
+
+socket.on("bettingRoundAction", (username) => {
+  if (username === player) {
+    bettingActions.style.display = "block";
+  }
+});
 
 function toggleForm() {
   if (loginForm.style.display === "none") {

@@ -16,6 +16,12 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
+    margin: auto;
+    margin-top: 10%;
+    top: 0;
+    left: 0;
+    right: 0;
+    
 }
 
 .form-container h2 {
@@ -95,4 +101,10 @@ body {
     left: 0;
     right: 0;
     
+}
+#bettingActions{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: none;
 }

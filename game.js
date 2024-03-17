@@ -74,6 +74,18 @@ function dealCard(table) {
     }
   }
 }
+async function bettingRound(table) {
+  for (var tableKey in table) {
+    var tableSpot = table[tableKey];
+    socket.emit("bettingRoundAction", tableSpot.username);
+    var result = await new Promise((resolve) => {
+      socket.on("bettingAction", (action) => {
+        resolve(action);
+      });
+    });
+    console.log(result);
+  }
+}
 
 socket.on("roundStart", (table) => {
   emptyHands(table);
@@ -81,7 +93,8 @@ socket.on("roundStart", (table) => {
   dealCard(table);
   dealCard(table);
   //betting round 1
-  socket.emit("bettingRoundAction");
+  bettingRound(table);
+
   /* 
 emit to client (ask for aciton)
 for in table emit(username)
