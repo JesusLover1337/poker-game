@@ -2,6 +2,7 @@ var tableSpots = {
   tableSpot1: {
     username: undefined,
     chips: undefined,
+    gameStatus: undefined,
     hand: [],
     card1posX: 150,
     card1posY: 155,
@@ -11,6 +12,7 @@ var tableSpots = {
   tableSpot2: {
     username: undefined,
     chips: undefined,
+    gameStatus: undefined,
     hand: [],
     card1posX: 150,
     card1posY: 300,
@@ -20,6 +22,7 @@ var tableSpots = {
   tableSpot3: {
     username: undefined,
     chips: undefined,
+    gameStatus: undefined,
     hand: [],
     card1posX: 570,
     card1posY: 155,
@@ -29,6 +32,7 @@ var tableSpots = {
   tableSpot4: {
     username: undefined,
     chips: undefined,
+    gameStatus: undefined,
     hand: [],
     card1posX: 570,
     card1posY: 300,
@@ -38,6 +42,7 @@ var tableSpots = {
   tableSpot5: {
     username: undefined,
     chips: undefined,
+    gameStatus: undefined,
     hand: [],
     card1posX: 370,
     card1posY: 330,
