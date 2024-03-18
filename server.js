@@ -25,25 +25,27 @@ server.listen(3000, () => {
 con.connect(function (err) {
   if (err) throw err;
 });
+
 function addPlayerToTable(player) {
-  for (var tableSpotKey in tableSpots) {
-    var tableSpot = tableSpots[tableSpotKey];
-    if (tableSpot.username == undefined) {
+  for (var i = 0; i < tableSpots.length; i++) {
+    var tableSpot = tableSpots[i];
+    if (tableSpot.username === undefined) {
       tableSpot.username = player.name;
       tableSpot.chips = player.chips;
-      /* console.log(tableSpots); */
+      console.log(tableSpots);
       break;
     }
   }
 }
+
 function removePlayerFromTable(player) {
-  for (var tableSpotKey in tableSpots) {
-    var tableSpot = tableSpots[tableSpotKey];
-    if (tableSpot.username == player) {
+  for (var i = 0; i < tableSpots.length; i++) {
+    var tableSpot = tableSpots[i];
+    if (tableSpot.username === player) {
       tableSpot.username = undefined;
-      //update database with chip amount
+      // Update database with chip amount
       tableSpot.chips = undefined;
-      /* console.log(tableSpots); */
+      console.log(tableSpots);
       break;
     }
   }
