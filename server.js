@@ -31,7 +31,7 @@ function addPlayerToTable(player) {
     if (tableSpot.username == undefined) {
       tableSpot.username = player.name;
       tableSpot.chips = player.chips;
-      console.log(tableSpots);
+      /* console.log(tableSpots); */
       break;
     }
   }
@@ -43,7 +43,7 @@ function removePlayerFromTable(player) {
       tableSpot.username = undefined;
       //update database with chip amount
       tableSpot.chips = undefined;
-      console.log(tableSpots);
+      /* console.log(tableSpots); */
       break;
     }
   }
