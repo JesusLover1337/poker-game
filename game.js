@@ -86,14 +86,14 @@ function smallBigDealer(table) {
 }
 
 function emptyHands(table) {
-  for (var tableKey in table) {
-    var tableSpot = table[tableKey];
+  for (var i = 0; i < table.length; i++) {
+    var tableSpot = table[i];
     tableSpot.hand = [];
   }
 }
 function dealCard(table) {
-  for (var tableKey in table) {
-    var tableSpot = table[tableKey];
+  for (var i = 0; i < table.length; i++) {
+    var tableSpot = table[i];
     if (tableSpot.username != undefined) {
       tableSpot.hand.push(getRandomCard());
     }
@@ -101,8 +101,8 @@ function dealCard(table) {
 }
 
 function handleFold(user) {
-  for (var tableKey in table) {
-    var tableSpot = table[tableKey];
+  for (var i = 0; i < table.length; i++) {
+    var tableSpot = table[i];
     if (tableSpot.username === user) {
       tableSpot.gameStatus = "folded";
     }
@@ -112,8 +112,8 @@ function handleFold(user) {
 function handleRaise(user, amount) {}
 
 function bettingRound(table) {
-  for (var tableKey in table) {
-    var tableSpot = table[tableKey];
+  for (var i = 0; i < table.length; i++) {
+    var tableSpot = table[i];
     if (tableSpot.gameStatus === "active") {
       socket.emit("bettingRoundAction", tableSpot.username, tableSpot.chips);
       function handleBettingAction(action) {
@@ -151,8 +151,8 @@ function bettingRound(table) {
 }
 
 socket.on("roundStart", (table) => {
-  for (var tableKey in table) {
-    var tableSpot = table[tableKey];
+  for (var i = 0; i < table.length; i++) {
+    var tableSpot = table[i];
     tableSpot.gameStatus = "active";
   }
   smallBigDealer(table);
