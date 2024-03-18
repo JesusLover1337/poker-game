@@ -74,16 +74,28 @@ function dealCard(table) {
     }
   }
 }
+
+function handleFold(user) {}
+
+function handleRaise(user, amount) {}
+
 async function bettingRound(table) {
   for (var tableKey in table) {
     var tableSpot = table[tableKey];
-    socket.emit("bettingRoundAction", tableSpot.username);
+    socket.emit("bettingRoundAction", tableSpot.username, tableSpot.chips);
     var result = await new Promise((resolve) => {
       socket.on("bettingAction", (action) => {
         resolve(action);
       });
     });
     console.log(result);
+    if (result === "fold") {
+      handleFold(tableSpot.username);
+    } else if (result === "check") {
+      //check
+    } else if (typeof result === Number) {
+      handleRaise(tableSpot.username, result);
+    }
   }
 }
 

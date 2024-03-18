@@ -31,18 +31,35 @@ socket.on("loginsuccess", (name) => {
 socket.on("signinsuccess", () => {
   toggleForm();
 });
-function raiseAction() {
-  var amount = document.getElementById("raiseAmount").value;
-  bettingAction(amount);
-}
+
 function bettingAction(action) {
   socket.emit("bettingAction", action);
   bettingActions.style.display = "none";
 }
 
-socket.on("bettingRoundAction", (username) => {
+var maxValue = 200;
+
+function updateTextInput(val) {
+  document.getElementById("raiseAmountDisplay").innerHTML = val;
+}
+
+function raiseAction() {
+  var amount = document.getElementById("raiseAmount").value;
+  bettingAction(amount);
+}
+
+window.onload = function () {
+  document.getElementById("raiseAmount").setAttribute("max", maxValue);
+  document.getElementById("raiseAmountDisplay").innerHTML =
+    document.getElementById("raiseAmount").value;
+};
+
+socket.on("bettingRoundAction", (username, maxValue) => {
   if (username === player) {
     bettingActions.style.display = "block";
+    /* document.getElementById("raiseAmount").setAttribute("max", maxValue);
+    document.getElementById("raiseAmountDisplay").innerHTML =
+    document.getElementById("raiseAmount").value;  */
   }
 });
 
