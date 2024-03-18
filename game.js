@@ -61,28 +61,23 @@ function getRandomCard() {
   return randomCard;
 }
 
-const roles = ["SmallBlind", "BigBlind", "Dealer"];
-var x = 0;
-var indexForRoles = 0;
-function smallBigDealer(table) {
-  var y = 0;
+let currentRoleIndex = 0;
 
-  for (var tableKey in table) {
-    var tableSpot = table[tableKey];
-    if (x === y) {
-      tableSpot.role = roles[indexForRoles];
-      indexForRoles++;
-    }
-    y++;
+function assignRoles(table) {
+  const roles = ["SmallBlind", "BigBlind", "Dealer"];
+
+  table.forEach((spot) => {
+    spot.role = undefined;
+  });
+
+  for (let i = 0; i < roles.length; i++) {
+    const playerIndex = (currentRoleIndex + i) % table.length;
+    table[playerIndex].role = roles[i];
   }
-  x++;
-  if (indexForRoles === 2) {
-    indexForRoles = 0;
-  }
-  if (x === 6) {
-    x = 0;
-  }
-  if (indexForRoles != 2) smallBigDealer(table);
+
+  currentRoleIndex = (currentRoleIndex + 1) % table.length;
+
+  return table;
 }
 
 function emptyHands(table) {
@@ -90,6 +85,7 @@ function emptyHands(table) {
     var tableSpot = table[i];
     tableSpot.hand = [];
   }
+  return table;
 }
 function dealCard(table) {
   for (var i = 0; i < table.length; i++) {
@@ -98,6 +94,7 @@ function dealCard(table) {
       tableSpot.hand.push(getRandomCard());
     }
   }
+  return table;
 }
 
 function handleFold(user) {
@@ -112,7 +109,7 @@ function handleFold(user) {
 function handleRaise(user, amount) {}
 
 function bettingRound(table) {
-  for (var i = 0; i < table.length; i++) {
+  /* for (var i = 0; i < table.length; i++) {
     var tableSpot = table[i];
     if (tableSpot.gameStatus === "active") {
       socket.emit("bettingRoundAction", tableSpot.username, tableSpot.chips);
@@ -128,7 +125,7 @@ function bettingRound(table) {
       }
       socket.on("bettingAction", handleBettingAction);
     }
-  }
+  } */
   /* for (var tableKey in table) {
     var tableSpot = table[tableKey];
     if (tableSpot.gameStatus === "active") {
@@ -155,13 +152,14 @@ socket.on("roundStart", (table) => {
     var tableSpot = table[i];
     tableSpot.gameStatus = "active";
   }
-  smallBigDealer(table);
-  emptyHands(table);
+
+  table = assignRoles(table);
+  table = emptyHands(table);
   tempCardDeck = deck;
-  dealCard(table);
-  dealCard(table);
+  table = dealCard(table);
+  table = dealCard(table);
   //betting round 1
-  bettingRound(table);
+  table = bettingRound(table);
 
   /* 
 emit to client (ask for aciton)
