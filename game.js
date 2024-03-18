@@ -60,6 +60,31 @@ function getRandomCard() {
   let randomCard = tempCardDeck.splice(randomIndex, 1)[0];
   return randomCard;
 }
+
+const roles = ["SmallBlind", "BigBlind", "Dealer"];
+var x = 0;
+var indexForRoles = 0;
+function smallBigDealer(table) {
+  var y = 0;
+
+  for (var tableKey in table) {
+    var tableSpot = table[tableKey];
+    if (x === y) {
+      tableSpot.role = roles[indexForRoles];
+      indexForRoles++;
+    }
+    y++;
+  }
+  x++;
+  if (indexForRoles === 2) {
+    indexForRoles = 0;
+  }
+  if (x === 6) {
+    x = 0;
+  }
+  if (indexForRoles != 2) smallBigDealer(table);
+}
+
 function emptyHands(table) {
   for (var tableKey in table) {
     var tableSpot = table[tableKey];
@@ -86,11 +111,25 @@ function handleFold(user) {
 
 function handleRaise(user, amount) {}
 
-async function bettingRound(table) {
-  // total
-  //totalBetted
-  //while true check if done
+function bettingRound(table) {
   for (var tableKey in table) {
+    var tableSpot = table[tableKey];
+    if (tableSpot.gameStatus === "active") {
+      socket.emit("bettingRoundAction", tableSpot.username, tableSpot.chips);
+      function handleBettingAction(action) {
+        console.log(action);
+        if (action === "fold") {
+          handleFold(tableSpot.username);
+        } else if (action === "check") {
+          // Handle check
+        } else if (typeof action === "number") {
+          handleRaise(tableSpot.username, action);
+        }
+      }
+      socket.on("bettingAction", handleBettingAction);
+    }
+  }
+  /* for (var tableKey in table) {
     var tableSpot = table[tableKey];
     if (tableSpot.gameStatus === "active") {
       socket.emit("bettingRoundAction", tableSpot.username, tableSpot.chips);
@@ -108,7 +147,7 @@ async function bettingRound(table) {
         handleRaise(tableSpot.username, result);
       }
     }
-  }
+  } */
 }
 
 socket.on("roundStart", (table) => {
@@ -116,7 +155,7 @@ socket.on("roundStart", (table) => {
     var tableSpot = table[tableKey];
     tableSpot.gameStatus = "active";
   }
-
+  smallBigDealer(table);
   emptyHands(table);
   tempCardDeck = deck;
   dealCard(table);
