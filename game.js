@@ -65,18 +65,14 @@ let currentRoleIndex = 0;
 
 function assignRoles(table) {
   const roles = ["SmallBlind", "BigBlind", "Dealer"];
-
   table.forEach((spot) => {
     spot.role = undefined;
   });
-
   for (let i = 0; i < roles.length; i++) {
     const playerIndex = (currentRoleIndex + i) % table.length;
     table[playerIndex].role = roles[i];
   }
-
   currentRoleIndex = (currentRoleIndex + 1) % table.length;
-
   return table;
 }
 
@@ -106,45 +102,50 @@ function handleFold(user) {
   }
 }
 
-function handleRaise(user, amount) {}
-
-function bettingRound(table) {
-  /* for (var i = 0; i < table.length; i++) {
+function getActivePlayersAmount(table) {
+  let activePlayersAmount = 0;
+  for (var i = 0; i < table.length; i++) {
     var tableSpot = table[i];
     if (tableSpot.gameStatus === "active") {
-      socket.emit("bettingRoundAction", tableSpot.username, tableSpot.chips);
-      function handleBettingAction(action) {
-        console.log(action);
-        if (action === "fold") {
-          handleFold(tableSpot.username);
-        } else if (action === "check") {
-          // Handle check
-        } else if (typeof action === "number") {
-          handleRaise(tableSpot.username, action);
-        }
-      }
-      socket.on("bettingAction", handleBettingAction);
+      activePlayersAmount++;
     }
-  } */
-  /* for (var tableKey in table) {
-    var tableSpot = table[tableKey];
-    if (tableSpot.gameStatus === "active") {
-      socket.emit("bettingRoundAction", tableSpot.username, tableSpot.chips);
-      var result = await new Promise((resolve) => {
-        socket.on("bettingAction", (action) => {
-          resolve(action);
-        });
-      });
-      console.log(result);
-      if (result === "fold") {
-        handleFold(tableSpot.username);
-      } else if (result === "check") {
-        //check
-      } else if (typeof result === Number) {
-        handleRaise(tableSpot.username, result);
-      }
+  }
+  return activePlayersAmount;
+}
+function sendBettingOption(table, index) {
+  if (table[index].gameStatus === "active") {
+    if (activePLayers > 0) {
+      activePLayers - 1;
+      socket.emit("bettingRoundAction", table[index].username, tableSpot.chips);
+    } else if (activePLayers === 0) {
+      //round finished
     }
-  } */
+  } else {
+    index = (index + 1) % table.length;
+    sendBettingOption(table, index);
+  }
+}
+
+socket.on("bettingAction", (action) => {
+  //get index here blet talbe också gobal maybe
+  console.log(action);
+  if (action === "fold") {
+    handleFold(table[index].username);
+    index = (index + 1) % table.length;
+    sendBettingOption(index);
+  } else if (action === "check") {
+    index = (index + 1) % table.length;
+    sendBettingOption(index);
+  } else if (typeof action === "number") {
+    activePLayers = getActivePlayersAmount(table);
+    index = (index + 1) % table.length;
+    sendBettingOption(index);
+  }
+});
+
+function bettingRound(table) {
+  let index = (currentRoleIndex + 2) % table.length;
+  sendBettingOption(table, index);
 }
 
 socket.on("roundStart", (table) => {
@@ -152,13 +153,13 @@ socket.on("roundStart", (table) => {
     var tableSpot = table[i];
     tableSpot.gameStatus = "active";
   }
-
   table = assignRoles(table);
   table = emptyHands(table);
   tempCardDeck = deck;
   table = dealCard(table);
   table = dealCard(table);
   //betting round 1
+  activePLayers = getActivePlayersAmount(table);
   table = bettingRound(table);
 
   /* 
