@@ -35,8 +35,6 @@
     <div id="bettingActions">
         <button id="fold" onclick="bettingAction('fold')">Fold</button>
         <button id="check" onclick="bettingAction('check')">Check</button>
-        <!-- <input type="number" id="raiseAmount" placeholder="Enter amount">
-        <button id="raise" onclick="raiseAction()">Raise</button> -->
         <input type="range" id="raiseAmount" min="0" max="100" value="0" oninput="updateTextInput(this.value);">
         <span id="raiseAmountDisplay">0</span>
         <button id="raise" onclick="raiseAction()">Raise</button>

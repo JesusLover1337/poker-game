@@ -162,18 +162,6 @@ socket.on("roundStart", (table) => {
   activePLayers = getActivePlayersAmount(table);
   table = bettingRound(table);
 
-  /* 
-emit to client (ask for aciton)
-for in table emit(username)
-client side if palyer === username {
-    ask for aciton
-}
-if action === raise {
-    bombacalt gör nåt coolt
-}
-måste vara seperat (en i taget kanske ha socket id i table)
-
-*/
   //flop
 
   //betting round 2
