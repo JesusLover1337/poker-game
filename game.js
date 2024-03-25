@@ -136,10 +136,10 @@ socket.on("bettingAction", (action) => {
   } else if (action === "check") {
     index = (index + 1) % table.length;
     sendBettingOption(index);
-  } else if (typeof action === "number") {
-    activePLayers = getActivePlayersAmount(table);
+  } else if (typeof action === Number) {
+    activePLayers = getActivePlayersAmount(table); //reset shi so it do
     index = (index + 1) % table.length;
-    sendBettingOption(index);
+    sendBettingOption(table, index);
   }
 });
 
