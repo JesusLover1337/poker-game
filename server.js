@@ -6,6 +6,14 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const { tableSpots } = require("./tableSpots");
 const io = new Server(server);
+import { emptyHands } from "./game-functions";
+import { handleFold } from "./game-functions";
+import { deck } from "./game-functions";
+import { bettingRound } from "./game-functions";
+import { getActivePlayersAmount } from "./game-functions";
+import { dealCard } from "./game-functions";
+import { assignRoles } from "./game-functions";
+import { bettingRound } from "./game-functions";
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -25,6 +33,12 @@ server.listen(3000, () => {
 con.connect(function (err) {
   if (err) throw err;
 });
+
+export let tempCardDeck = deck;
+
+var tempTableSpots = tableSpots;
+
+export let currentRoleIndex = 0;
 
 function addPlayerToTable(player) {
   for (var i = 0; i < tableSpots.length; i++) {
@@ -94,5 +108,71 @@ io.on("connection", (socket) => {
   });
   socket.on("logout", (player) => {
     removePlayerFromTable(player);
+  });
+
+  function sendBettingOption(table, index) {
+    if (table[index].gameStatus === "active") {
+      if (activePLayers > 0) {
+        activePLayers = activePLayers - 1;
+        socket.emit(
+          "bettingRoundAction",
+          table[index].username,
+          table[index].chips
+        );
+      } else if (activePLayers === 0) {
+        //round finished
+      }
+    } else {
+      index = (index + 1) % table.length;
+      sendBettingOption(table, index);
+    }
+  }
+
+  socket.on("bettingAction", (action) => {
+    //get index here blet talbe också gobal maybe
+    console.log(action);
+    if (action === "fold") {
+      handleFold(tempTableSpots[index].username);
+      index = (index + 1) % tempTableSpots.length;
+      sendBettingOption(tempTableSpots, index);
+    } else if (action === "check") {
+      index = (index + 1) % tempTableSpots.length;
+      sendBettingOption(tempTableSpots, index);
+    } else if (typeof action === Number) {
+      activePLayers = getActivePlayersAmount(tempTableSpots); //reset shi so it do
+      //action = amout betted set ting to other ting type shi
+      index = (index + 1) % tempTableSpots.length;
+      sendBettingOption(tempTableSpots, index);
+    }
+  });
+
+  socket.on("roundStart", () => {
+    tempTableSpots = tableSpots;
+    for (var i = 0; i < tempTableSpots.length; i++) {
+      var tableSpot = tempTableSpots[i];
+      tableSpot.gameStatus = "active";
+    }
+    tempTableSpots = assignRoles(tempTableSpots);
+    tempTableSpots = emptyHands(tempTableSpots);
+    tempCardDeck = deck;
+    tempTableSpots = dealCard(tempTableSpots);
+    tempTableSpots = dealCard(tempTableSpots);
+    //betting round 1
+    activePLayers = getActivePlayersAmount(tempTableSpots);
+    tempTableSpots = bettingRound(tempTableSpots);
+
+    //flop
+
+    //betting round 2
+
+    //turn
+
+    //betting round 3
+
+    //river
+
+    //betting round 4
+
+    //who won... payouts... start next round...
   });
 });
