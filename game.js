@@ -115,7 +115,7 @@ function getActivePlayersAmount(table) {
 function sendBettingOption(table, index) {
   if (table[index].gameStatus === "active") {
     if (activePLayers > 0) {
-      activePLayers - 1;
+      activePLayers = activePLayers - 1;
       socket.emit("bettingRoundAction", table[index].username, tableSpot.chips);
     } else if (activePLayers === 0) {
       //round finished
