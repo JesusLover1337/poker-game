@@ -119,6 +119,7 @@ function sendBettingOption(table, index) {
       socket.emit("bettingRoundAction", table[index].username, tableSpot.chips);
     } else if (activePLayers === 0) {
       //round finished
+      return table;
     }
   } else {
     index = (index + 1) % table.length;
@@ -132,20 +133,22 @@ socket.on("bettingAction", (action) => {
   if (action === "fold") {
     handleFold(table[index].username);
     index = (index + 1) % table.length;
-    sendBettingOption(index);
+    sendBettingOption(table, index);
   } else if (action === "check") {
     index = (index + 1) % table.length;
-    sendBettingOption(index);
+    sendBettingOption(table, index);
   } else if (typeof action === Number) {
     activePLayers = getActivePlayersAmount(table); //reset shi so it do
+    //action = amout betted set ting to other ting type shi
     index = (index + 1) % table.length;
     sendBettingOption(table, index);
   }
 });
 
 function bettingRound(table) {
-  let index = (currentRoleIndex + 2) % table.length;
-  sendBettingOption(table, index);
+  var index = (currentRoleIndex + 2) % table.length;
+  let bettingRoundResults = sendBettingOption(table, index);
+  return bettingRoundResults;
 }
 
 socket.on("roundStart", (table) => {
