@@ -1,3 +1,9 @@
+import { emptyHands } from "./game-functions";
+import { handleFold } from "./game-functions";
+import { getActivePlayersAmount } from "./game-functions";
+import { dealCard } from "./game-functions";
+import { assignRoles } from "./game-functions";
+
 var socket = io();
 const deck = [
   "2H",
@@ -53,65 +59,10 @@ const deck = [
   "KS",
   "AS",
 ];
-let tempCardDeck = deck;
+export let tempCardDeck = deck;
 
-function getRandomCard() {
-  let randomIndex = Math.floor(Math.random() * tempCardDeck.length);
-  let randomCard = tempCardDeck.splice(randomIndex, 1)[0];
-  return randomCard;
-}
+export let currentRoleIndex = 0;
 
-let currentRoleIndex = 0;
-
-function assignRoles(table) {
-  const roles = ["SmallBlind", "BigBlind", "Dealer"];
-  table.forEach((spot) => {
-    spot.role = undefined;
-  });
-  for (let i = 0; i < roles.length; i++) {
-    const playerIndex = (currentRoleIndex + i) % table.length;
-    table[playerIndex].role = roles[i];
-  }
-  currentRoleIndex = (currentRoleIndex + 1) % table.length;
-  return table;
-}
-
-function emptyHands(table) {
-  for (var i = 0; i < table.length; i++) {
-    var tableSpot = table[i];
-    tableSpot.hand = [];
-  }
-  return table;
-}
-function dealCard(table) {
-  for (var i = 0; i < table.length; i++) {
-    var tableSpot = table[i];
-    if (tableSpot.username != undefined) {
-      tableSpot.hand.push(getRandomCard());
-    }
-  }
-  return table;
-}
-
-function handleFold(user) {
-  for (var i = 0; i < table.length; i++) {
-    var tableSpot = table[i];
-    if (tableSpot.username === user) {
-      tableSpot.gameStatus = "folded";
-    }
-  }
-}
-
-function getActivePlayersAmount(table) {
-  let activePlayersAmount = 0;
-  for (var i = 0; i < table.length; i++) {
-    var tableSpot = table[i];
-    if (tableSpot.gameStatus === "active") {
-      activePlayersAmount++;
-    }
-  }
-  return activePlayersAmount;
-}
 function sendBettingOption(table, index) {
   if (table[index].gameStatus === "active") {
     if (activePLayers > 0) {
