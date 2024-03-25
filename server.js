@@ -6,14 +6,12 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const { tableSpots } = require("./tableSpots");
 const io = new Server(server);
-import { emptyHands } from "./game-functions";
-import { handleFold } from "./game-functions";
+import { emptyHands, handleFold } from "./game-functions";
 import { deck } from "./game-functions";
 import { bettingRound } from "./game-functions";
 import { getActivePlayersAmount } from "./game-functions";
 import { dealCard } from "./game-functions";
 import { assignRoles } from "./game-functions";
-import { bettingRound } from "./game-functions";
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -34,16 +32,17 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-export let tempCardDeck = deck;
+/* export let tempCardDeck = deck; */
 
 var tempTableSpots = tableSpots;
 
-export let currentRoleIndex = 0;
+/* export let currentRoleIndex = 0; */
 
-function addPlayerToTable(player) {
+function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
     var tableSpot = tableSpots[i];
     if (tableSpot.username === undefined) {
+      connectedUsers[id] = i;
       tableSpot.username = player.name;
       tableSpot.chips = player.chips;
       console.log(tableSpots);
@@ -81,11 +80,14 @@ io.on("connection", (socket) => {
         if (username === account.name && password === account.password) {
           loginSuccess = true;
           console.log("user exists");
-          addPlayerToTable(account);
+          addPlayerToTable(account, socket.id);
+          // När vi vet index
+
           socket.emit("loginsuccess", account.name);
         }
       });
     });
+    console.log(connectedUsers);
   });
   socket.on("signup", (username, email, password) => {
     var startingchips = 10000;
@@ -108,6 +110,8 @@ io.on("connection", (socket) => {
   });
   socket.on("logout", (player) => {
     removePlayerFromTable(player);
+    delete connectedUsers[socket.id];
+    console.log(connectedUsers);
   });
 
   function sendBettingOption(table, index) {
@@ -128,8 +132,10 @@ io.on("connection", (socket) => {
     }
   }
 
+  let connectedUsers = {};
   socket.on("bettingAction", (action) => {
     //get index here blet talbe också gobal maybe
+    let index = connectedUsers[socket.id];
     console.log(action);
     if (action === "fold") {
       handleFold(tempTableSpots[index].username);

@@ -1,5 +1,8 @@
-import { currentRoleIndex } from "./server";
-import { tempCardDeck } from "./server";
+/* import { currentRoleIndex } from "./server";
+import { tempCardDeck } from "./server"; */
+
+let currentRoleIndex = 0;
+let tempCardDeck = deck;
 
 export function getRandomCard() {
   let randomIndex = Math.floor(Math.random() * tempCardDeck.length);
