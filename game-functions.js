@@ -1,5 +1,10 @@
 let currentRoleIndex = 0;
 
+/* 
+tempDeck kankse resetas 
+jag kallar i "bettingRound" på en func som ligger i server.js :( dum dum
+*/
+
 const deck = [
   "2H",
   "3H",
@@ -61,16 +66,16 @@ function getRandomCard() {
   let randomCard = tempCardDeck.splice(randomIndex, 1)[0];
   return randomCard;
 }
-function assignRoles(table) {
+function assignRoles(table, playerAmount) {
   const roles = ["SmallBlind", "BigBlind", "Dealer"];
   table.forEach((spot) => {
     spot.role = undefined;
   });
   for (let i = 0; i < roles.length; i++) {
-    const playerIndex = (currentRoleIndex + i) % table.length;
+    const playerIndex = (currentRoleIndex + i) % playerAmount;
     table[playerIndex].role = roles[i];
   }
-  currentRoleIndex = (currentRoleIndex + 1) % table.length;
+  currentRoleIndex = (currentRoleIndex + 1) % playerAmount;
   return table;
 }
 function emptyHands(table) {

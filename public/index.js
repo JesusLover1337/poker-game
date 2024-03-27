@@ -24,9 +24,12 @@ function signup(event) {
   let email = inputEmail.value;
   socket.emit("signup", username, email, password);
 }
-socket.on("loginsuccess", (name) => {
+socket.on("loginsuccess", (name, playerAmount) => {
   togglelogin();
   player = name;
+  if (playerAmount >= 3) {
+    socket.emit("roundStart");
+  }
 });
 socket.on("signinsuccess", () => {
   toggleForm();

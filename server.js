@@ -37,6 +37,7 @@ con.connect(function (err) {
 });
 
 var tempTableSpots = tableSpots;
+var connectedUsers = {};
 
 function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
@@ -45,7 +46,7 @@ function addPlayerToTable(player, id) {
       connectedUsers[id] = i;
       tableSpot.username = player.name;
       tableSpot.chips = player.chips;
-      console.log(tableSpots);
+      /* console.log(tableSpots); */
       break;
     }
   }
@@ -81,13 +82,14 @@ io.on("connection", (socket) => {
           loginSuccess = true;
           console.log("user exists");
           addPlayerToTable(account, socket.id);
-          // När vi vet index
-
-          socket.emit("loginsuccess", account.name);
+          socket.emit(
+            "loginsuccess",
+            account.name,
+            Object.keys(connectedUsers).length
+          );
         }
       });
     });
-    console.log(connectedUsers);
   });
   socket.on("signup", (username, email, password) => {
     var startingchips = 10000;
@@ -111,7 +113,6 @@ io.on("connection", (socket) => {
   socket.on("logout", (player) => {
     removePlayerFromTable(player);
     delete connectedUsers[socket.id];
-    console.log(connectedUsers);
   });
 
   function sendBettingOption(table, index) {
@@ -132,7 +133,6 @@ io.on("connection", (socket) => {
     }
   }
 
-  let connectedUsers = {};
   socket.on("bettingAction", (action) => {
     //get index here blet talbe också gobal maybe
     let index = connectedUsers[socket.id];
@@ -154,18 +154,21 @@ io.on("connection", (socket) => {
 
   socket.on("roundStart", () => {
     tempTableSpots = tableSpots;
-    for (var i = 0; i < tempTableSpots.length; i++) {
+    let playerAmount = Object.keys(connectedUsers).length;
+    for (var i = 0; i < playerAmount; i++) {
       var tableSpot = tempTableSpots[i];
       tableSpot.gameStatus = "active";
     }
-    tempTableSpots = assignRoles(tempTableSpots);
+    tempTableSpots = assignRoles(tempTableSpots, playerAmount);
     tempTableSpots = emptyHands(tempTableSpots);
-    tempCardDeck = deck;
+    /* tempCardDeck = deck; */
     tempTableSpots = dealCard(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);
+    console.log("temp table:", tempTableSpots);
+
     //betting round 1
     activePLayers = getActivePlayersAmount(tempTableSpots);
-    tempTableSpots = bettingRound(tempTableSpots);
+    /* tempTableSpots = bettingRound(tempTableSpots); */
 
     //flop
 
