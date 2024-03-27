@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "dependencies": {
     "@xpressit/winning-poker-hand-rank": "^0.2.1",
     "express": "^4.18.3",

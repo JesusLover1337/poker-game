@@ -6,12 +6,16 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const { tableSpots } = require("./tableSpots");
 const io = new Server(server);
-import { emptyHands, handleFold } from "./game-functions";
-import { deck } from "./game-functions";
-import { bettingRound } from "./game-functions";
-import { getActivePlayersAmount } from "./game-functions";
-import { dealCard } from "./game-functions";
-import { assignRoles } from "./game-functions";
+const {
+  emptyHands,
+  handleFold,
+  deck,
+  bettingRound,
+  getActivePlayersAmount,
+  dealCard,
+  assignRoles,
+} = require("./game-functions");
+
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -32,11 +36,7 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-/* export let tempCardDeck = deck; */
-
 var tempTableSpots = tableSpots;
-
-/* export let currentRoleIndex = 0; */
 
 function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
