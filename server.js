@@ -184,4 +184,5 @@ io.on("connection", (socket) => {
 
     //who won... payouts... start next round...
   });
+  /* exports.sendBettingOption = sendBettingOption; */
 });
