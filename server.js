@@ -146,7 +146,7 @@ io.on("connection", (socket) => {
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     } else if (action === "check") {
-      console.log(tempTableSpots);
+      /* console.log(tempTableSpots); */
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     } else if (typeof action === Number) {
@@ -169,7 +169,7 @@ io.on("connection", (socket) => {
     /* tempCardDeck = deck; */
     tempTableSpots = dealCard(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);
-    console.log("temp table:", tempTableSpots);
+    /* console.log("temp table:", tempTableSpots); */
 
     //betting round 1
     activePLayers = getActivePlayersAmount(tempTableSpots);
