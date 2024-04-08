@@ -1,15 +1,6 @@
 let currentRoleIndex = 0;
 /* const { sendBettingOption } = require("./server"); */
 
-/* 
-tempDeck kankse resetas 
-jag kallar i "bettingRound" på en func som ligger i server.js :( dum dum
-circular dependency??
-(node:3512) Warning: Accessing non-existent property 'sendBettingOption' of module exports inside circular dependency
-(Use `node --trace-warnings ...` to show where the warning was created)
-varnar men startar fortfarande........
-*/
-
 const deck = [
   "2H",
   "3H",
@@ -121,13 +112,13 @@ function handleFold(user, table) {
   return table;
 }
 
-function bettingRound(table) {
+/* function bettingRound(table) {
   var index = (currentRoleIndex + 2) % table.length;
   let bettingRoundResults = sendBettingOption(table, index);
   return bettingRoundResults;
-}
+} */
 
-exports.bettingRound = bettingRound;
+/* exports.bettingRound = bettingRound; */
 exports.deck = deck;
 exports.handleFold = handleFold;
 exports.emptyHands = emptyHands;
@@ -135,3 +126,4 @@ exports.getActivePlayersAmount = getActivePlayersAmount;
 exports.assignRoles = assignRoles;
 exports.dealCard = dealCard;
 exports.getRandomCard = getRandomCard;
+exports.currentRoleIndex = currentRoleIndex;

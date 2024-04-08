@@ -10,7 +10,7 @@ const {
   emptyHands,
   handleFold,
   deck,
-  bettingRound,
+  currentRoleIndex,
   getActivePlayersAmount,
   dealCard,
   assignRoles,
@@ -132,9 +132,13 @@ io.on("connection", (socket) => {
       sendBettingOption(table, index);
     }
   }
+  function bettingRound(table) {
+    var index = (currentRoleIndex + 2) % table.length;
+    let bettingRoundResults = sendBettingOption(table, index);
+    return bettingRoundResults;
+  }
 
   socket.on("bettingAction", (action) => {
-    //get index here blet talbe också gobal maybe
     let index = connectedUsers[socket.id];
     console.log(action);
     if (action === "fold") {
@@ -142,6 +146,7 @@ io.on("connection", (socket) => {
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     } else if (action === "check") {
+      console.log(tempTableSpots);
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     } else if (typeof action === Number) {
@@ -153,7 +158,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("roundStart", () => {
-    tempTableSpots = tableSpots;
+    var tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
     for (var i = 0; i < playerAmount; i++) {
       var tableSpot = tempTableSpots[i];
@@ -168,7 +173,7 @@ io.on("connection", (socket) => {
 
     //betting round 1
     activePLayers = getActivePlayersAmount(tempTableSpots);
-    /* tempTableSpots = bettingRound(tempTableSpots); */
+    tempTableSpots = bettingRound(tempTableSpots);
 
     //flop
 
