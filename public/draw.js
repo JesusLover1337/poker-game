@@ -7,7 +7,7 @@ const cardHeight = 74.5;
 const cardWidth = 51.5;
 
 //drawCard(cardToPos(card), {x:0,y:0});
-function drawCard(pos, location) {
+/* function drawCard(pos, location) {
   ctx.drawImage(
     cardDeck,
     cardWidth * pos.PosX,
@@ -19,7 +19,7 @@ function drawCard(pos, location) {
     cardWidth / 1.5,
     cardHeight / 1.5
   );
-}
+} */
 
 class Card {
   constructor(value, suit) {
@@ -92,7 +92,7 @@ function getKeyByValue(object, value) {
     }
   }
 }
-function cardToPos(card) {
+export function cardToPos(card) {
   const conversionTable = {
     0: "A",
     1: "2",
@@ -108,7 +108,7 @@ function cardToPos(card) {
     11: "Q",
     12: "K",
   };
-  ans = getKeyByValue(conversionTable, card[0]);
+  let ans = getKeyByValue(conversionTable, card[0]);
   ans = Number(ans);
   let cardPos = null;
   if (card[1] === "D") {
@@ -123,3 +123,30 @@ function cardToPos(card) {
   }
   return cardPos.getCardPos();
 }
+
+export const tableCardsPos = [
+  {
+    x: 306,
+    y: 232,
+  },
+  {
+    x: 345,
+    y: 232,
+  },
+  {
+    x: 383,
+    y: 232,
+  },
+  {
+    x: 422,
+    y: 232,
+  },
+  {
+    x: 461,
+    y: 232,
+  },
+];
+
+/* exports.drawCard = drawCard; */
+// exports.cardToPos = cardToPos;
+// exports.tableCardsPos = tableCardsPos;

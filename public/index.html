@@ -13,7 +13,7 @@
     <form>
         <input id="username1" type="text" placeholder="Username" required>
         <input id="pass1" type="password" placeholder="Password" required>
-        <button type="submit" onclick="login(event)">Login</button>
+        <button type="submit" id="loginBtn">Login</button>
     </form>
     <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
 </div>
@@ -24,7 +24,7 @@
         <input id="username2" type="text" placeholder="Username" required>
         <input id="email" type="email" placeholder="Email" required>
         <input id="password2" type="password" placeholder="Password" required>
-        <button type="submit" onclick="signup(event)">Sign Up</button>
+        <button type="submit" id="signupBtn">Sign Up</button>
     </form>
     <p>Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
 </div>
@@ -33,16 +33,15 @@
     <canvas id="canvas" width="800" height="500" ></canvas>
     <button id="logout" onclick="logout()">Log Out</button>
     <div id="bettingActions">
-        <button id="fold" onclick="bettingAction('fold')">Fold</button>
-        <button id="check" onclick="bettingAction('check')">Check</button>
+        <button id="fold" >Fold</button>
+        <button id="check" >Check</button>
         <input type="range" id="raiseAmount" min="0" max="100" value="0" oninput="updateTextInput(this.value);">
         <span id="raiseAmountDisplay">0</span>
-        <button id="raise" onclick="raiseAction()">Raise</button>
-
+        <button id="raise" >Raise</button>
     </div>
 
 
-<script src="/public/index.js">
+<script type="module" src="/public/index.js">
 </script>
 
 </body>

@@ -14,6 +14,7 @@ const {
   getActivePlayersAmount,
   dealCard,
   assignRoles,
+  getRandomCard,
 } = require("./game-functions");
 
 var con = mysql.createConnection({
@@ -116,16 +117,20 @@ io.on("connection", (socket) => {
   });
 
   function sendBettingOption(table, index) {
+    console.log("helo");
     if (table[index].gameStatus === "active") {
       if (activePLayers > 0) {
         activePLayers = activePLayers - 1;
-        socket.emit(
+        io.emit(
           "bettingRoundAction",
           table[index].username,
           table[index].chips
         );
       } else if (activePLayers === 0) {
+        console.log("round done");
         //round finished
+        var flopCards = [getRandomCard(), getRandomCard(), getRandomCard()];
+        io.emit("drawTableX", "flop", flopCards);
       }
     } else {
       index = (index + 1) % table.length;
@@ -180,10 +185,12 @@ io.on("connection", (socket) => {
     //betting round 2
 
     //turn
+    /* io.on("drawTableX", "turn", getRandomCard); */
 
     //betting round 3
 
     //river
+    /* io.on("drawTableX", "river", getRandomCard); */
 
     //betting round 4
 

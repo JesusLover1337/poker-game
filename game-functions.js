@@ -1,5 +1,4 @@
 let currentRoleIndex = 0;
-/* const { sendBettingOption } = require("./server"); */
 
 const deck = [
   "2H",
@@ -127,3 +126,4 @@ exports.assignRoles = assignRoles;
 exports.dealCard = dealCard;
 exports.getRandomCard = getRandomCard;
 exports.currentRoleIndex = currentRoleIndex;
+exports.getRandomCard = getRandomCard;
