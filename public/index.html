@@ -15,7 +15,7 @@
         <input id="pass1" type="password" placeholder="Password" required>
         <button type="submit" id="loginBtn">Login</button>
     </form>
-    <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
+    <p>Don't have an account? <a href="#" id="toggleSignup">Sign up</a></p>
 </div>
 
 <div class="form-container" style="display: none;">
@@ -26,12 +26,12 @@
         <input id="password2" type="password" placeholder="Password" required>
         <button type="submit" id="signupBtn">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+    <p>Already have an account? <a href="#" id="toggleLogin">Login</a></p>
 </div>
 <img src="/public/images/carddeck3-removebg-preview.png" id="cardDeck" alt="">
     <div id="background"></div>
     <canvas id="canvas" width="800" height="500" ></canvas>
-    <button id="logout" onclick="logout()">Log Out</button>
+    <button id="logout" >Log Out</button>
     <div id="bettingActions">
         <button id="fold" >Fold</button>
         <button id="check" >Check</button>
@@ -44,5 +44,7 @@
 <script type="module" src="/public/index.js">
 </script>
 
+<script type="module" src="/public/button.js">
+</script>
 </body>
 </html>

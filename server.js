@@ -39,7 +39,7 @@ con.connect(function (err) {
 
 var tempTableSpots = tableSpots;
 var connectedUsers = {};
-
+let activePLayers;
 function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
     var tableSpot = tableSpots[i];
@@ -117,10 +117,11 @@ io.on("connection", (socket) => {
   });
 
   function sendBettingOption(table, index) {
-    console.log("helo");
     if (table[index].gameStatus === "active") {
+      console.log(activePLayers);
       if (activePLayers > 0) {
         activePLayers = activePLayers - 1;
+        console.log("bet emit");
         io.emit(
           "bettingRoundAction",
           table[index].username,
@@ -131,6 +132,8 @@ io.on("connection", (socket) => {
         //round finished
         var flopCards = [getRandomCard(), getRandomCard(), getRandomCard()];
         io.emit("drawTableX", "flop", flopCards);
+        activePLayers = getActivePlayersAmount(tempTableSpots);
+        tempTableSpots = bettingRound(tempTableSpots);
       }
     } else {
       index = (index + 1) % table.length;
@@ -145,7 +148,7 @@ io.on("connection", (socket) => {
 
   socket.on("bettingAction", (action) => {
     let index = connectedUsers[socket.id];
-    console.log(action);
+    console.log("onBettingAction", action);
     if (action === "fold") {
       handleFold(tempTableSpots[index].username);
       index = (index + 1) % tempTableSpots.length;
@@ -154,13 +157,16 @@ io.on("connection", (socket) => {
       /* console.log(tempTableSpots); */
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
-    } else if (typeof action === Number) {
+    } else if (typeof action === "number") {
       activePLayers = getActivePlayersAmount(tempTableSpots); //reset shi so it do
+      console.log("onBettingAction activePlayers", activePLayers);
       //action = amout betted set ting to other ting type shi
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     }
   });
+
+  /* var activePLayers; */
 
   socket.on("roundStart", () => {
     var tempTableSpots = tableSpots;
@@ -178,6 +184,7 @@ io.on("connection", (socket) => {
 
     //betting round 1
     activePLayers = getActivePlayersAmount(tempTableSpots);
+
     tempTableSpots = bettingRound(tempTableSpots);
 
     //flop

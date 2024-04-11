@@ -5,11 +5,11 @@ const playingTable = document.getElementById("background");
 const canvas = document.getElementById("canvas");
 const logOutButton = document.getElementById("logout");
 const bettingActions = document.getElementById("bettingActions");
-let player = undefined;
 const ctx = canvas.getContext("2d");
 const cardDeck = document.getElementById("cardDeck");
 const cardHeight = 74.5;
 const cardWidth = 51.5;
+let player = undefined;
 
 import { cardToPos, tableCardsPos } from "./draw.js";
 
@@ -28,6 +28,8 @@ function drawCard(pos, location) {
 }
 
 export function login(event) {
+  console.log(event);
+  debugger;
   event.preventDefault();
   let inputUsername = document.getElementById("username1");
   let inputPassword = document.getElementById("pass1");
@@ -36,6 +38,7 @@ export function login(event) {
   socket.emit("login", username, password);
 }
 export function signup(event) {
+  console.log(event);
   event.preventDefault();
   let inputUsername = document.getElementById("username2");
   let inputPassword = document.getElementById("password2");
@@ -45,6 +48,7 @@ export function signup(event) {
   let email = inputEmail.value;
   socket.emit("signup", username, email, password);
 }
+
 socket.on("loginsuccess", (name, playerAmount) => {
   togglelogin();
   player = name;
@@ -56,9 +60,13 @@ socket.on("signinsuccess", () => {
   toggleForm();
 });
 
-function fold(event) {
+export function fold(event) {
   event.preventDefault();
   bettingAction("fold");
+}
+export function check(event) {
+  event.preventDefault();
+  bettingAction("check");
 }
 
 function bettingAction(action) {
@@ -70,7 +78,7 @@ function updateTextInput(val) {
   document.getElementById("raiseAmountDisplay").innerHTML = val;
 }
 
-function raiseAction() {
+export function raiseAction() {
   var amount = document.getElementById("raiseAmount").value;
   bettingAction(amount);
 }
@@ -111,7 +119,7 @@ socket.on("drawTableX", (spot, cards) => {
   //drawCard(cardToPos(card), {x:0,y:0});
 });
 
-function toggleForm() {
+export function toggleForm() {
   if (loginForm.style.display === "none") {
     loginForm.style.display = "block";
     signupForm.style.display = "none";
@@ -120,7 +128,7 @@ function toggleForm() {
     signupForm.style.display = "block";
   }
 }
-function logout() {
+export function logout() {
   loginForm.style.display = "block";
   playingTable.style.display = "none";
   canvas.style.display = "none";
