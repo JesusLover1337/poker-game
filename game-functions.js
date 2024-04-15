@@ -112,11 +112,14 @@ function handleFold(user, table) {
 }
 
 function getActivePlayersHands(tableSpots) {
-  const activePlayers = tableSpots.filter(
-    (spot) => spot.gameStatus === "active"
-  );
-  const activePlayersHands = activePlayers.map((player) => player.hand);
-  return activePlayersHands;
+  return tableSpots
+    .map((spot, index) => ({
+      id: index,
+      cards: spot.hand,
+      isActive: spot.gameStatus === "active",
+    }))
+    .filter((spot) => spot.isActive)
+    .map(({ id, cards }) => ({ id, cards }));
 }
 
 /* function bettingRound(table) {
