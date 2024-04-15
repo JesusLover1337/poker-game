@@ -15,6 +15,7 @@ const {
   dealCard,
   assignRoles,
   getRandomCard,
+  getActivePlayersHands,
 } = require("./game-functions");
 
 var con = mysql.createConnection({
@@ -40,6 +41,10 @@ con.connect(function (err) {
 var tempTableSpots = tableSpots;
 var connectedUsers = {};
 let activePLayers;
+let roundsPlayed;
+const gameType = "texas";
+let board = [];
+const roundNames = ["flop", "turn", "river" /* , "last" */];
 function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
     var tableSpot = tableSpots[i];
@@ -128,12 +133,31 @@ io.on("connection", (socket) => {
           table[index].chips
         );
       } else if (activePLayers === 0) {
+        if (roundsPlayed === 3) {
+          console.log("game finish");
+          console.log(board);
+          console.log(getActivePlayersHands(tempTableSpots));
+
+          /* const result = rankHands(
+            gameType,
+            board,
+            getActivePlayersHands(tempTableSpots)
+          );
+          console.log(result); */
+        }
         console.log("round done");
         //round finished
-        var flopCards = [getRandomCard(), getRandomCard(), getRandomCard()];
-        io.emit("drawTableX", "flop", flopCards);
+        const cardsToShow =
+          roundsPlayed === 0
+            ? [getRandomCard(), getRandomCard(), getRandomCard()]
+            : [getRandomCard()];
+        cardsToShow.forEach((card) => {
+          board.push(card);
+        });
+        io.emit("drawTableX", roundNames[roundsPlayed], cardsToShow);
         activePLayers = getActivePlayersAmount(tempTableSpots);
-        tempTableSpots = bettingRound(tempTableSpots);
+        roundsPlayed++;
+        bettingRound(tempTableSpots);
       }
     } else {
       index = (index + 1) % table.length;
@@ -148,7 +172,7 @@ io.on("connection", (socket) => {
 
   socket.on("bettingAction", (action) => {
     let index = connectedUsers[socket.id];
-    console.log("onBettingAction", action);
+    /* console.log("onBettingAction", action); */
     if (action === "fold") {
       handleFold(tempTableSpots[index].username);
       index = (index + 1) % tempTableSpots.length;
@@ -159,16 +183,17 @@ io.on("connection", (socket) => {
       sendBettingOption(tempTableSpots, index);
     } else if (typeof action === "number") {
       activePLayers = getActivePlayersAmount(tempTableSpots); //reset shi so it do
-      console.log("onBettingAction activePlayers", activePLayers);
+      /* console.log("onBettingAction activePlayers", activePLayers); */
       //action = amout betted set ting to other ting type shi
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     }
   });
 
-  /* var activePLayers; */
-
   socket.on("roundStart", () => {
+    board = [];
+    //reset deck
+    roundsPlayed = 0;
     var tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
     for (var i = 0; i < playerAmount; i++) {
@@ -180,12 +205,11 @@ io.on("connection", (socket) => {
     /* tempCardDeck = deck; */
     tempTableSpots = dealCard(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);
-    /* console.log("temp table:", tempTableSpots); */
 
     //betting round 1
     activePLayers = getActivePlayersAmount(tempTableSpots);
 
-    tempTableSpots = bettingRound(tempTableSpots);
+    bettingRound(tempTableSpots);
 
     //flop
 

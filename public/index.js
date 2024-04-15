@@ -9,6 +9,8 @@ const ctx = canvas.getContext("2d");
 const cardDeck = document.getElementById("cardDeck");
 const cardHeight = 74.5;
 const cardWidth = 51.5;
+const canvas_width = (canvas.width = 800);
+const canvas_height = (canvas.height = 500);
 let player = undefined;
 
 import { cardToPos, tableCardsPos } from "./draw.js";
@@ -28,8 +30,6 @@ function drawCard(pos, location) {
 }
 
 export function login(event) {
-  console.log(event);
-  debugger;
   event.preventDefault();
   let inputUsername = document.getElementById("username1");
   let inputPassword = document.getElementById("pass1");
@@ -38,7 +38,6 @@ export function login(event) {
   socket.emit("login", username, password);
 }
 export function signup(event) {
-  console.log(event);
   event.preventDefault();
   let inputUsername = document.getElementById("username2");
   let inputPassword = document.getElementById("password2");
@@ -84,7 +83,7 @@ export function raiseAction() {
 }
 
 socket.on("bettingRoundAction", (username, maxValue) => {
-  console.log(username);
+  /* console.log(username); */
   if (username === player) {
     bettingActions.style.display = "block";
     document.getElementById("raiseAmount").setAttribute("max", maxValue);
@@ -94,21 +93,18 @@ socket.on("bettingRoundAction", (username, maxValue) => {
 });
 
 socket.on("drawTableX", (spot, cards) => {
+  if (spot === null) {
+    ctx.clearRect(0, 0, canvas_width, canvas_height);
+    socket.emit("roundStart");
+  }
   console.log(spot);
-  console.log(cards);
+  /* console.log(cards); */
   const abc = {
     flop: 0,
     turn: 3,
     river: 4,
   };
   var x = abc[spot];
-  /*   if (spot === "flop") {
-    var x = 0;
-  } else if (spot === "turn") {
-    var x = 3;
-  } else if (spot === "river") {
-    var x = 4;
-  } */
   for (let i = 0; i < cards.length; i++) {
     const card = cards[i];
     var indexCordinetds = i + x;

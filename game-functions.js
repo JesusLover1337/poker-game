@@ -111,6 +111,14 @@ function handleFold(user, table) {
   return table;
 }
 
+function getActivePlayersHands(tableSpots) {
+  const activePlayers = tableSpots.filter(
+    (spot) => spot.gameStatus === "active"
+  );
+  const activePlayersHands = activePlayers.map((player) => player.hand);
+  return activePlayersHands;
+}
+
 /* function bettingRound(table) {
   var index = (currentRoleIndex + 2) % table.length;
   let bettingRoundResults = sendBettingOption(table, index);
@@ -127,3 +135,4 @@ exports.dealCard = dealCard;
 exports.getRandomCard = getRandomCard;
 exports.currentRoleIndex = currentRoleIndex;
 exports.getRandomCard = getRandomCard;
+exports.getActivePlayersHands = getActivePlayersHands;
