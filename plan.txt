@@ -5,25 +5,34 @@ hej pass123
 
 min 3
 
-const gameType = 'texas';
-const board = ['5D', '8D', 'TD', 'AS', 'QS'];
-const player1Cards = ['TC', 'TS'];
-const player2Cards = ['2D', '3D'];
+  var hand1 = {id: 1, cards: ['Ac', '5c']}; // tie
+  var hand2 = {id: 2, cards: ['Ad', '8d']}; // tie
+  var hand3 = {id: 3, cards: ['Kh', 'Jc']}; // win
+  var board = ['Th', '9h', 'Tc', '6c', 'Jh'];
+  var hands = [hand1, hand2, hand3];
+  var results = Ranker.orderHands(hands, board);
 
-const result = rankHands(gameType, board, [player1Cards, player2Cards]);
-
-Output:
-[
-    {
-        rank: 1875,
-        combination: 'ThreeOfAKind',
-        madeHand: ['TC', 'TS', 'TD', 'AS', 'QS'],
-        unused: ['5D', '8D']
-    },
-    {
-        rank: 1531,
-        combination: 'Flush',
-        madeHand: ['2D', '3D', '5D', '8D', 'TD'],
-        unused: ['AS', 'QS']
-    }
+  [
+  [
+    { id: 3,
+      ranking: 'two pair',
+      cards: [ ... ],
+      board: [ ... ],
+      playingCards: [ ... ],
+      description: 'two pair jacks and tens' }
+  ],
+  [ 
+    { id: 1,
+      ranking: 'pair',
+      cards: [ ... ],
+      board: [ ... ],
+      playingCards: [ ... ],
+      description: 'a pair of tens' },
+    { id: 2,
+      ranking: 'pair',
+      cards: [ ... ],
+      board: [ ... ],
+      playingCards: [ ... ],
+      description: 'a pair of tens' } 
+  ]
 ]
