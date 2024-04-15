@@ -83,19 +83,23 @@ export function raiseAction() {
 }
 
 socket.on("bettingRoundAction", (username, maxValue) => {
-  /* console.log(username); */
   if (username === player) {
+    console.log(username);
     bettingActions.style.display = "block";
+    console.log(bettingActions.style.display);
     document.getElementById("raiseAmount").setAttribute("max", maxValue);
     document.getElementById("raiseAmountDisplay").innerHTML =
       document.getElementById("raiseAmount").value;
   }
 });
 
-socket.on("drawTableX", (spot, cards) => {
+socket.on("drawTableX", (spot, cards, username) => {
   if (spot === null) {
+    bettingActions.style.display = "none";
     ctx.clearRect(0, 0, canvas_width, canvas_height);
-    socket.emit("roundStart");
+    if (username === player) {
+      socket.emit("roundStart");
+    }
   }
   console.log(spot);
   /* console.log(cards); */

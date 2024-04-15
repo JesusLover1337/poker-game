@@ -122,10 +122,9 @@ io.on("connection", (socket) => {
 
   function sendBettingOption(table, index) {
     if (table[index].gameStatus === "active") {
-      console.log(activePLayers);
       if (activePLayers > 0) {
         activePLayers = activePLayers - 1;
-        console.log("bet emit");
+        console.log("index", index);
         io.emit(
           "bettingRoundAction",
           table[index].username,
@@ -145,10 +144,17 @@ io.on("connection", (socket) => {
         cardsToShow.forEach((card) => {
           board.push(card);
         });
-        io.emit("drawTableX", roundNames[roundsPlayed], cardsToShow);
+        io.emit(
+          "drawTableX",
+          roundNames[roundsPlayed],
+          cardsToShow,
+          table[index].username
+        );
         activePLayers = getActivePlayersAmount(tempTableSpots);
         roundsPlayed++;
-        bettingRound(tempTableSpots);
+        if (roundsPlayed <= 3) {
+          bettingRound(tempTableSpots);
+        }
       }
     } else {
       index = (index + 1) % table.length;
@@ -156,12 +162,13 @@ io.on("connection", (socket) => {
     }
   }
   function bettingRound(table) {
-    var index = (currentRoleIndex + 2) % table.length;
+    var index = (currentRoleIndex + 2) % Object.keys(connectedUsers).length;
     let bettingRoundResults = sendBettingOption(table, index);
     return bettingRoundResults;
   }
 
   socket.on("bettingAction", (action) => {
+    /* console.log(socket.id, connectedUsers, tempTableSpots); */
     let index = connectedUsers[socket.id];
     if (action === "fold") {
       handleFold(tempTableSpots[index].username);
@@ -189,6 +196,7 @@ io.on("connection", (socket) => {
       tableSpot.gameStatus = "active";
     }
     tempTableSpots = assignRoles(tempTableSpots, playerAmount);
+    console.log("correntindex", currentRoleIndex);
     tempTableSpots = emptyHands(tempTableSpots);
     /* tempCardDeck = deck; */
     tempTableSpots = dealCard(tempTableSpots);
@@ -196,6 +204,8 @@ io.on("connection", (socket) => {
 
     //betting round 1
     activePLayers = getActivePlayersAmount(tempTableSpots);
+
+    /* console.log(tempTableSpots); */
 
     bettingRound(tempTableSpots);
     //who won... payouts... start next round...
