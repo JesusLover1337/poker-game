@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 const express = require("express");
+const Ranker = require("handranker-latest");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
@@ -42,7 +43,6 @@ var tempTableSpots = tableSpots;
 var connectedUsers = {};
 let activePLayers;
 let roundsPlayed;
-const gameType = "texas";
 let board = [];
 const roundNames = ["flop", "turn", "river"];
 function addPlayerToTable(player, id) {
@@ -133,8 +133,11 @@ io.on("connection", (socket) => {
       } else if (activePLayers === 0) {
         if (roundsPlayed === 3) {
           console.log("game finish");
-          console.log(board);
-          console.log(getActivePlayersHands(tempTableSpots));
+          /* console.log(board);
+          console.log(getActivePlayersHands(tempTableSpots)); */
+          let hands = getActivePlayersHands(tempTableSpots);
+          var results = Ranker.orderHands(hands, board);
+          console.log(results);
         }
         console.log("round done");
         const cardsToShow =

@@ -111,14 +111,14 @@ export function cardToPos(card) {
   let ans = getKeyByValue(conversionTable, card[0]);
   ans = Number(ans);
   let cardPos = null;
-  if (card[1] === "D") {
+  if (card[1] === "d") {
     // skriv om detta så det ser vettigt ut
     cardPos = new Diamond(ans);
-  } else if (card[1] === "H") {
+  } else if (card[1] === "h") {
     cardPos = new Heart(ans);
-  } else if (card[1] === "C") {
+  } else if (card[1] === "c") {
     cardPos = new Club(ans);
-  } else if (card[1] === "S") {
+  } else if (card[1] === "s") {
     cardPos = new Spade(ans);
   }
   return cardPos.getCardPos();
