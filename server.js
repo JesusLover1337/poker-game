@@ -10,14 +10,15 @@ const io = new Server(server);
 const {
   emptyHands,
   handleFold,
-  deck,
-  currentRoleIndex,
   getActivePlayersAmount,
   dealCard,
   assignRoles,
   getRandomCard,
   getActivePlayersHands,
+  resetCarddeck,
+  getIndexofDealer,
 } = require("./game-functions");
+const {} = require("./server-functions");
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -165,13 +166,12 @@ io.on("connection", (socket) => {
     }
   }
   function bettingRound(table) {
-    var index = (currentRoleIndex + 2) % Object.keys(connectedUsers).length;
+    var index = getIndexofDealer(table);
     let bettingRoundResults = sendBettingOption(table, index);
     return bettingRoundResults;
   }
 
   socket.on("bettingAction", (action) => {
-    /* console.log(socket.id, connectedUsers, tempTableSpots); */
     let index = connectedUsers[socket.id];
     if (action === "fold") {
       handleFold(tempTableSpots[index].username);
@@ -189,8 +189,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("roundStart", () => {
-    board = [];
-    //reset deck
+    let = board = [];
+    resetCarddeck();
     roundsPlayed = 0;
     var tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
@@ -199,18 +199,13 @@ io.on("connection", (socket) => {
       tableSpot.gameStatus = "active";
     }
     tempTableSpots = assignRoles(tempTableSpots, playerAmount);
-    console.log("correntindex", currentRoleIndex);
     tempTableSpots = emptyHands(tempTableSpots);
-    /* tempCardDeck = deck; */
     tempTableSpots = dealCard(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);
+    io.emit("drawAllBackside", tempTableSpots);
 
-    //betting round 1
     activePLayers = getActivePlayersAmount(tempTableSpots);
 
-    /* console.log(tempTableSpots); */
-
     bettingRound(tempTableSpots);
-    //who won... payouts... start next round...
   });
 });

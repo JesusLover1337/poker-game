@@ -84,9 +84,7 @@ export function raiseAction() {
 
 socket.on("bettingRoundAction", (username, maxValue) => {
   if (username === player) {
-    console.log(username);
     bettingActions.style.display = "block";
-    console.log(bettingActions.style.display);
     document.getElementById("raiseAmount").setAttribute("max", maxValue);
     document.getElementById("raiseAmountDisplay").innerHTML =
       document.getElementById("raiseAmount").value;
@@ -101,8 +99,6 @@ socket.on("drawTableX", (spot, cards, username) => {
       socket.emit("roundStart");
     }
   }
-  console.log(spot);
-  /* console.log(cards); */
   const abc = {
     flop: 0,
     turn: 3,
@@ -143,3 +139,16 @@ function togglelogin() {
   canvas.style.display = "block";
   logOutButton.style.display = "block";
 }
+
+socket.on("drawAllBackside", (spots) => {
+  spots.forEach((spot) => {
+    if (spot.gameStatus === "active") {
+      console.table({ x: spot.card1posX, y: spot.card1posY });
+      drawCard({ posX: 4, posY: 2 }, { x: spot.card1posX, y: spot.card1posY });
+      drawCard(
+        { posX: /* 74.5 *  */ 2, posY: /*  51.5 *  */ 4 },
+        { x: spot.card2posX, y: spot.card2posY }
+      );
+    }
+  });
+});

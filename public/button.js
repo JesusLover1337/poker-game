@@ -25,5 +25,3 @@ signupBtn.addEventListener("click", signup);
 logoutBtn.addEventListener("click", logout);
 toggleSignupBtn.addEventListener("click", toggleForm);
 toggleLoginBtn.addEventListener("click", toggleForm);
-
-console.log(logInBtn);
