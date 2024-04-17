@@ -36,3 +36,17 @@ min 3
       description: 'a pair of tens' } 
   ]
 ]
+
+ge alla spots bakside kort
+sen
+ge player sina kort med id socket emit 
+nån text som visar vad man har kan inte se shit med images
+
+BETTING!!?
+fold?
+
+waiting lobby?
+overall ui
+
+https://www.npmjs.com/package/handranker-latest?activeTab=readme
+
