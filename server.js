@@ -45,6 +45,8 @@ var connectedUsers = {};
 let activePLayers;
 let roundsPlayed;
 let board = [];
+const smallBlind = 20;
+const bigBlind = 40;
 const roundNames = ["flop", "turn", "river"];
 function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
@@ -134,8 +136,8 @@ io.on("connection", (socket) => {
       } else if (activePLayers === 0) {
         if (roundsPlayed === 3) {
           console.log("game finish");
-          /* console.log(board);
-          console.log(getActivePlayersHands(tempTableSpots)); */
+          console.log(board);
+          console.log(getActivePlayersHands(tempTableSpots));
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
           console.log(results);
@@ -174,7 +176,10 @@ io.on("connection", (socket) => {
   socket.on("bettingAction", (action) => {
     let index = connectedUsers[socket.id];
     if (action === "fold") {
-      handleFold(tempTableSpots[index].username);
+      tempTableSpots = handleFold(
+        tempTableSpots[index].username,
+        tempTableSpots
+      );
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     } else if (action === "check") {
@@ -189,11 +194,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("roundStart", () => {
+    //check if broke
+
     let = board = [];
     resetCarddeck();
     roundsPlayed = 0;
     var tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
+    //ändra så alltid funka if usernamne != undef elr nåt
     for (var i = 0; i < playerAmount; i++) {
       var tableSpot = tempTableSpots[i];
       tableSpot.gameStatus = "active";

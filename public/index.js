@@ -16,6 +16,8 @@ let player = undefined;
 import { cardToPos, tableCardsPos } from "./draw.js";
 
 function drawCard(pos, location) {
+  console.log(pos);
+  console.log(location);
   ctx.drawImage(
     cardDeck,
     cardWidth * pos.PosX,
@@ -143,12 +145,9 @@ function togglelogin() {
 socket.on("drawAllBackside", (spots) => {
   spots.forEach((spot) => {
     if (spot.gameStatus === "active") {
-      console.table({ x: spot.card1posX, y: spot.card1posY });
+      /* console.table({ x: spot.card1posX, y: spot.card1posY }); */
       drawCard({ posX: 4, posY: 2 }, { x: spot.card1posX, y: spot.card1posY });
-      drawCard(
-        { posX: /* 74.5 *  */ 2, posY: /*  51.5 *  */ 4 },
-        { x: spot.card2posX, y: spot.card2posY }
-      );
+      drawCard({ posX: 2, posY: 4 }, { x: spot.card2posX, y: spot.card2posY });
     }
   });
 });

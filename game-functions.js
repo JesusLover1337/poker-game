@@ -78,10 +78,6 @@ function assignRoles(table, playerAmount) {
   return table;
 }
 
-function getValueofCurrentRoleIndex() {
-  return currentRoleIndex;
-}
-
 function getIndexofDealer(table) {
   for (let dealerIndex = 0; dealerIndex < table.length; dealerIndex++) {
     const spot = table[dealerIndex];
