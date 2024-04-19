@@ -146,8 +146,17 @@ socket.on("drawAllBackside", (spots) => {
   spots.forEach((spot) => {
     if (spot.gameStatus === "active") {
       /* console.table({ x: spot.card1posX, y: spot.card1posY }); */
-      drawCard({ posX: 4, posY: 2 }, { x: spot.card1posX, y: spot.card1posY });
+      drawCard({ posX: 2, posY: 4 }, { x: spot.card1posX, y: spot.card1posY });
       drawCard({ posX: 2, posY: 4 }, { x: spot.card2posX, y: spot.card2posY });
     }
   });
+});
+
+socket.on("drawHand", (spot) => {
+  if (spot.gameStatus === "active") {
+    let card1 = spot.hand[0];
+    let card2 = spot.hand[1];
+    drawCard(cardToPos(card1), { x: spot.card1posX, y: spot.card1posY });
+    drawCard(cardToPos(card2), { x: spot.card2posX, y: spot.card2posY });
+  }
 });

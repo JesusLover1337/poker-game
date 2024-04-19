@@ -211,7 +211,12 @@ io.on("connection", (socket) => {
     tempTableSpots = dealCard(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);
     io.emit("drawAllBackside", tempTableSpots);
-
+    for (const id in connectedUsers) {
+      if (Object.hasOwnProperty.call(connectedUsers, id)) {
+        const element = connectedUsers[id];
+        io.to(id).emit("drawHand", tempTableSpots[element]);
+      }
+    }
     activePLayers = getActivePlayersAmount(tempTableSpots);
 
     bettingRound(tempTableSpots);
