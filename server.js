@@ -137,8 +137,8 @@ io.on("connection", (socket) => {
       } else if (activePLayers === 0) {
         if (roundsPlayed === 3) {
           console.log("game finish");
-          console.log(board);
-          console.log(getActivePlayersHands(tempTableSpots));
+          /* console.log(board);
+          console.log(getActivePlayersHands(tempTableSpots)); */
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
           console.log(results);

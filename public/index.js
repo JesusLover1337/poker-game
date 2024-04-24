@@ -94,7 +94,9 @@ socket.on(
   (username, maxValue, betAmountTable, betAmountPlayer) => {
     if (username === player) {
       toBet = betAmountPlayer - betAmountTable;
-      console.log("To bet is: ", toBet);
+      if (toBet > maxValue) {
+      }
+      /* console.log("To bet is: ", toBet); */
       bettingActions.style.display = "block";
       if (toBet > 0) {
         document.getElementById("check").style.display = "none";
