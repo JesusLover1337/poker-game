@@ -12,12 +12,11 @@ const cardWidth = 51.5;
 const canvas_width = (canvas.width = 800);
 const canvas_height = (canvas.height = 500);
 let player = undefined;
+let toBet;
 
 import { cardToPos, tableCardsPos } from "./draw.js";
 
 function drawCard(pos, location) {
-  /* console.log(pos);
-  console.log(location); */
   ctx.drawImage(
     cardDeck,
     cardWidth * pos.PosX,
@@ -70,6 +69,11 @@ export function check(event) {
   bettingAction("check");
 }
 
+export function call(event) {
+  event.preventDefault();
+  bettingAction(toBet);
+}
+
 function bettingAction(action) {
   socket.emit("bettingAction", action);
   bettingActions.style.display = "none";
@@ -82,18 +86,29 @@ export function updateTextInput(event) {
 
 export function raiseAction() {
   var amount = document.getElementById("raiseAmount").value;
-  console.log(amount);
   bettingAction(amount);
 }
 
-socket.on("bettingRoundAction", (username, maxValue) => {
-  if (username === player) {
-    bettingActions.style.display = "block";
-    document.getElementById("raiseAmount").setAttribute("max", maxValue);
-    document.getElementById("raiseAmountDisplay").innerHTML =
-      document.getElementById("raiseAmount").value;
+socket.on(
+  "bettingRoundAction",
+  (username, maxValue, betAmountTable, betAmountPlayer) => {
+    if (username === player) {
+      toBet = betAmountPlayer - betAmountTable;
+      console.log("To bet is: ", toBet);
+      bettingActions.style.display = "block";
+      if (toBet > 0) {
+        document.getElementById("check").style.display = "none";
+        document.getElementById("call").style.display = "inline-block";
+      } else {
+        document.getElementById("check").style.display = "inline-block";
+        document.getElementById("call").style.display = "none";
+      }
+      document.getElementById("raiseAmount").setAttribute("max", maxValue);
+      document.getElementById("raiseAmountDisplay").innerHTML =
+        document.getElementById("raiseAmount").value;
+    }
   }
-});
+);
 
 socket.on("drawTableX", (spot, cards, username) => {
   if (spot === null) {

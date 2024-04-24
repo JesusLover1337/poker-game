@@ -45,6 +45,7 @@ var connectedUsers = {};
 let activePLayers;
 let roundsPlayed;
 let board = [];
+let currentBetAmount;
 const roundNames = ["flop", "turn", "river"];
 function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
@@ -129,7 +130,9 @@ io.on("connection", (socket) => {
         io.emit(
           "bettingRoundAction",
           table[index].username,
-          table[index].chips
+          table[index].chips,
+          table[index].bettedAmount,
+          currentBetAmount
         );
       } else if (activePLayers === 0) {
         if (roundsPlayed === 3) {
@@ -186,7 +189,8 @@ io.on("connection", (socket) => {
     } else if (typeof Number(action) === "number") {
       action = Number(action);
       activePLayers = getActivePlayersAmount(tempTableSpots) - 1;
-      tempTableSpots[index].bettedAmount = action;
+      tempTableSpots[index].bettedAmount += action;
+      currentBetAmount = tempTableSpots[index].bettedAmount;
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     }
@@ -195,6 +199,7 @@ io.on("connection", (socket) => {
   socket.on("roundStart", () => {
     //check if 3 players
     //check if broke
+    currentBetAmount = 40;
     let = board = [];
     resetCarddeck();
     roundsPlayed = 0;
