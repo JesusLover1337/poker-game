@@ -37,10 +37,13 @@ min 3
   ]
 ]
 
-ge alla spots bakside kort
-sen
-ge player sina kort med id socket emit 
+
 nån text som visar vad man har kan inte se shit med images
+/*
+var Ranker = require('handranker-latest');
+  var cards = ['3s', '3c', 'Ac', 'Ah', '3d'];
+  var result = Ranker.getHand(cards); 
+*/
 
 BETTING!!?
 fold?

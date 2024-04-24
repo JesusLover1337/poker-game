@@ -195,7 +195,6 @@ io.on("connection", (socket) => {
 
   socket.on("roundStart", () => {
     //check if broke
-
     let = board = [];
     resetCarddeck();
     roundsPlayed = 0;
@@ -218,7 +217,6 @@ io.on("connection", (socket) => {
       }
     }
     activePLayers = getActivePlayersAmount(tempTableSpots);
-
     bettingRound(tempTableSpots);
   });
 });
