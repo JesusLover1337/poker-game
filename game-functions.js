@@ -1,4 +1,9 @@
 let currentRoleIndex = 0;
+const blinds = {
+  SmallBlind: 20,
+  BigBlind: 40,
+  Dealer: 0,
+};
 
 const deck = [
   "2h",
@@ -73,6 +78,7 @@ function assignRoles(table, playerAmount) {
   for (let i = 0; i < roles.length; i++) {
     const playerIndex = (currentRoleIndex + i) % playerAmount;
     table[playerIndex].role = roles[i];
+    table[playerIndex].bettedAmount = blinds[roles[i]];
   }
   currentRoleIndex = (currentRoleIndex + 1) % playerAmount;
   return table;

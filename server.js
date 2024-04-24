@@ -45,8 +45,6 @@ var connectedUsers = {};
 let activePLayers;
 let roundsPlayed;
 let board = [];
-const smallBlind = 20;
-const bigBlind = 40;
 const roundNames = ["flop", "turn", "river"];
 function addPlayerToTable(player, id) {
   for (var i = 0; i < tableSpots.length; i++) {
@@ -185,27 +183,30 @@ io.on("connection", (socket) => {
     } else if (action === "check") {
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
-    } else if (typeof action === "number") {
-      activePLayers = getActivePlayersAmount(tempTableSpots); //reset shi so it do
-      //action = amout betted set ting to other ting type shi
+    } else if (typeof Number(action) === "number") {
+      action = Number(action);
+      activePLayers = getActivePlayersAmount(tempTableSpots) - 1;
+      tempTableSpots[index].bettedAmount = action;
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
     }
   });
 
   socket.on("roundStart", () => {
+    //check if 3 players
     //check if broke
     let = board = [];
     resetCarddeck();
     roundsPlayed = 0;
     var tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
-    //ändra så alltid funka if usernamne != undef elr nåt
+    //ändra så alltid funka if usernamne != undef elr nåt om 4 kör och player 2 lämnar
     for (var i = 0; i < playerAmount; i++) {
       var tableSpot = tempTableSpots[i];
       tableSpot.gameStatus = "active";
     }
     tempTableSpots = assignRoles(tempTableSpots, playerAmount);
+    console.log(tempTableSpots);
     tempTableSpots = emptyHands(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);

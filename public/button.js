@@ -6,6 +6,7 @@ import {
   check,
   fold,
   toggleForm,
+  updateTextInput,
 } from "./index.js";
 
 const foldBtn = document.getElementById("fold");
@@ -16,6 +17,7 @@ const signupBtn = document.getElementById("signupBtn");
 const logoutBtn = document.getElementById("logout");
 const toggleSignupBtn = document.getElementById("toggleSignup");
 const toggleLoginBtn = document.getElementById("toggleLogin");
+const updateInput = document.getElementById("raiseAmount");
 
 raiseBtn.addEventListener("click", raiseAction);
 foldBtn.addEventListener("click", fold);
@@ -25,3 +27,4 @@ signupBtn.addEventListener("click", signup);
 logoutBtn.addEventListener("click", logout);
 toggleSignupBtn.addEventListener("click", toggleForm);
 toggleLoginBtn.addEventListener("click", toggleForm);
+updateInput.addEventListener("input", updateTextInput);

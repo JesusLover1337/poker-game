@@ -38,18 +38,18 @@ min 3
 ]
 
 
+
+
+BETTING!!?
+
+waiting lobby?
+overall ui
 nån text som visar vad man har kan inte se shit med images
 /*
 var Ranker = require('handranker-latest');
   var cards = ['3s', '3c', 'Ac', 'Ah', '3d'];
   var result = Ranker.getHand(cards); 
 */
-
-BETTING!!?
-fold?
-
-waiting lobby?
-overall ui
 
 https://www.npmjs.com/package/handranker-latest?activeTab=readme
 

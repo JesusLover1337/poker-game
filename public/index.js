@@ -75,12 +75,14 @@ function bettingAction(action) {
   bettingActions.style.display = "none";
 }
 
-function updateTextInput(val) {
+export function updateTextInput(event) {
+  let val = event.target.value;
   document.getElementById("raiseAmountDisplay").innerHTML = val;
 }
 
 export function raiseAction() {
   var amount = document.getElementById("raiseAmount").value;
+  console.log(amount);
   bettingAction(amount);
 }
 
