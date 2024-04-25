@@ -9,7 +9,8 @@ body {
 }
 
 .form-container {
-    background-color: #fff;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -25,7 +26,7 @@ body {
 
 .form-container h2 {
     margin-bottom: 20px;
-    color: #333;
+    color: white;
 }
 
 .form-container input {
@@ -40,24 +41,25 @@ body {
 .form-container button {
     width: 100%;
     padding: 10px;
-    background-color: #4caf50;
-    color: #fff;
+    background: rgb(0,0,0);
+background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.0) 100%);
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .form-container button:hover {
-    background-color: #45a049;
+    background-color: black;
 }
 
 .form-container p {
     margin-top: 10px;
-    color: #888;
+    color: white;
 }
 
 .form-container a {
-    color: #3498db;
+    color: darkblue;
     text-decoration: none;
 }
 
@@ -102,8 +104,13 @@ body {
     
 }
 #bettingActions{
+    border-radius: 10px;
+    padding: 1.5%;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
     display: none;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%);
 }

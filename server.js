@@ -19,6 +19,7 @@ const {
   getIndexofDealer,
 } = require("./game-functions");
 const {} = require("./server-functions");
+const { log } = require("console");
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -83,6 +84,8 @@ function addAcount(name, email, password, chips) {
 
 io.on("connection", (socket) => {
   socket.on("login", (username, password) => {
+    if (!username) username = undefined;
+    if (!password) password = undefined;
     con.query("SELECT * FROM acounts", function (err, results, fields) {
       if (err) throw err;
       results.forEach((account) => {
@@ -139,7 +142,7 @@ io.on("connection", (socket) => {
           console.log("game finish");
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
-          console.table(results);
+          console.log(results);
           //let res = handleresult(result)
           //io.emit("send res",res)
         }
@@ -206,10 +209,11 @@ io.on("connection", (socket) => {
     roundsPlayed = 0;
     var tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
-    //ändra så alltid funka if usernamne != undef elr nåt om 4 kör och player 2 lämnar och table...
-    for (var i = 0; i < playerAmount; i++) {
+    for (var i = 0; i < tempTableSpots.length; i++) {
       var tableSpot = tempTableSpots[i];
-      tableSpot.gameStatus = "active";
+      if (tableSpot.username != undefined) {
+        tableSpot.gameStatus = "active";
+      }
     }
     tempTableSpots = assignRoles(tempTableSpots, playerAmount);
     tempTableSpots = emptyHands(tempTableSpots);

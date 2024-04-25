@@ -41,6 +41,7 @@ min 3
 
 
 BETTING!!?
+call is not raise dont restats cycle
 
 waiting lobby?
 overall ui
