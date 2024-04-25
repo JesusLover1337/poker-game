@@ -85,10 +85,12 @@ function assignRoles(table, playerAmount) {
 }
 
 function getIndexofDealer(table) {
+  //get index of dealer
   let index = table.findIndex(
     (spot) => spot.role === "Dealer" && spot.gameStatus === "active"
   );
   if (index === -1) {
+    //if dealer folded get index of next active
     index = table.findIndex((spot) => spot.gameStatus === "active");
   }
   return index;
