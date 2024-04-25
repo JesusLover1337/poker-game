@@ -95,8 +95,8 @@ socket.on(
     if (username === player) {
       toBet = betAmountPlayer - betAmountTable;
       if (toBet > maxValue) {
+        //allin type shi
       }
-      /* console.log("To bet is: ", toBet); */
       bettingActions.style.display = "block";
       if (toBet > 0) {
         document.getElementById("check").style.display = "none";

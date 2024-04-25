@@ -28,6 +28,7 @@ var con = mysql.createConnection({
 });
 
 app.use("/public", express.static("public"));
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
@@ -137,11 +138,11 @@ io.on("connection", (socket) => {
       } else if (activePLayers === 0) {
         if (roundsPlayed === 3) {
           console.log("game finish");
-          /* console.log(board);
-          console.log(getActivePlayersHands(tempTableSpots)); */
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
           console.log(results);
+          //let res = handleresult(result)
+          //io.emit("send res",res)
         }
         console.log("round done");
         const cardsToShow =
@@ -169,12 +170,14 @@ io.on("connection", (socket) => {
     }
   }
   function bettingRound(table) {
+    //kan läggas i game-funcs
     var index = getIndexofDealer(table);
     let bettingRoundResults = sendBettingOption(table, index);
     return bettingRoundResults;
   }
 
   socket.on("bettingAction", (action) => {
+    //kanske tabort elseif elseif elsif
     let index = connectedUsers[socket.id];
     if (action === "fold") {
       tempTableSpots = handleFold(
@@ -205,7 +208,7 @@ io.on("connection", (socket) => {
     roundsPlayed = 0;
     var tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
-    //ändra så alltid funka if usernamne != undef elr nåt om 4 kör och player 2 lämnar
+    //ändra så alltid funka if usernamne != undef elr nåt om 4 kör och player 2 lämnar och table...
     for (var i = 0; i < playerAmount; i++) {
       var tableSpot = tempTableSpots[i];
       tableSpot.gameStatus = "active";
