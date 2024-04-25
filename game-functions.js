@@ -85,14 +85,22 @@ function assignRoles(table, playerAmount) {
 }
 
 function getIndexofDealer(table) {
-  //get index of dealer
+  const index =
+    table.findIndex(
+      (spot) => spot.role === "Dealer" && spot.gameStatus === "active"
+    ) === -1
+      ? table.findIndex((spot) => spot.gameStatus === "active")
+      : table.findIndex(
+          (spot) => spot.role === "Dealer" && spot.gameStatus === "active"
+        );
+  /*   //get index of dealer
   let index = table.findIndex(
     (spot) => spot.role === "Dealer" && spot.gameStatus === "active"
   );
   //if dealer folded get index of next active
   if (index === -1) {
     index = table.findIndex((spot) => spot.gameStatus === "active");
-  }
+  } */
   return index;
 }
 function emptyHands(table) {
