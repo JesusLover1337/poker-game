@@ -127,7 +127,6 @@ io.on("connection", (socket) => {
     if (table[index].gameStatus === "active") {
       if (activePLayers > 0) {
         activePLayers = activePLayers - 1;
-        console.log("index", index);
         io.emit(
           "bettingRoundAction",
           table[index].username,
@@ -144,7 +143,6 @@ io.on("connection", (socket) => {
           //let res = handleresult(result)
           //io.emit("send res",res)
         }
-        console.log("round done");
         const cardsToShow =
           roundsPlayed === 0
             ? [getRandomCard(), getRandomCard(), getRandomCard()]
@@ -214,7 +212,6 @@ io.on("connection", (socket) => {
       tableSpot.gameStatus = "active";
     }
     tempTableSpots = assignRoles(tempTableSpots, playerAmount);
-    console.log(tempTableSpots);
     tempTableSpots = emptyHands(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);
     tempTableSpots = dealCard(tempTableSpots);

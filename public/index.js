@@ -101,6 +101,7 @@ socket.on(
       if (toBet > 0) {
         document.getElementById("check").style.display = "none";
         document.getElementById("call").style.display = "inline-block";
+        document.getElementById("call").innerHTML = `Call: ${toBet}`;
       } else {
         document.getElementById("check").style.display = "inline-block";
         document.getElementById("call").style.display = "none";
