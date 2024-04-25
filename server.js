@@ -139,7 +139,7 @@ io.on("connection", (socket) => {
           console.log("game finish");
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
-          console.log(results);
+          console.table(results);
           //let res = handleresult(result)
           //io.emit("send res",res)
         }
