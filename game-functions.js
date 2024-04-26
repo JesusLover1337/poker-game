@@ -93,14 +93,6 @@ function getIndexofDealer(table) {
       : table.findIndex(
           (spot) => spot.role === "Dealer" && spot.gameStatus === "active"
         );
-  /*   //get index of dealer
-  let index = table.findIndex(
-    (spot) => spot.role === "Dealer" && spot.gameStatus === "active"
-  );
-  //if dealer folded get index of next active
-  if (index === -1) {
-    index = table.findIndex((spot) => spot.gameStatus === "active");
-  } */
   return index;
 }
 function emptyHands(table) {
