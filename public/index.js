@@ -116,16 +116,19 @@ socket.on(
 socket.on("drawTableX", (spot, cards, username) => {
   if (spot === null) {
     bettingActions.style.display = "none";
+    //delay type shi to show res
     ctx.clearRect(0, 0, canvas_width, canvas_height);
     if (username === player) {
       socket.emit("roundStart");
     }
   }
+  //ändra namn
   const abc = {
     flop: 0,
     turn: 3,
     river: 4,
   };
+  //ändra namn
   var x = abc[spot];
   for (let i = 0; i < cards.length; i++) {
     const card = cards[i];
@@ -133,8 +136,6 @@ socket.on("drawTableX", (spot, cards, username) => {
     var cardCordinetds = tableCardsPos[indexCordinetds];
     drawCard(cardToPos(card), cardCordinetds);
   }
-
-  //drawCard(cardToPos(card), {x:0,y:0});
 });
 
 export function toggleForm() {
