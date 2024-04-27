@@ -17,9 +17,9 @@ const {
   getActivePlayersHands,
   resetCarddeck,
   getIndexofDealer,
+  handleresult,
 } = require("./game-functions");
 const {} = require("./server-functions");
-const { log } = require("console");
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -65,10 +65,14 @@ function removePlayerFromTable(player) {
   for (var i = 0; i < tableSpots.length; i++) {
     var tableSpot = tableSpots[i];
     if (tableSpot.username === player) {
-      tableSpot.username = undefined;
-      // Update database with chip amount
+      console.log(tableSpot);
+      var sql = `UPDATE acounts SET chips = '${tableSpot.chips}' WHERE name = '${tableSpot.username}'`;
+      con.query(sql, function (err, result) {
+        if (err) throw err;
+      });
       tableSpot.chips = undefined;
-      console.log(tableSpots);
+      tableSpot.username = undefined;
+      tableSpot.gameStatus = "folded";
       break;
     }
   }
@@ -143,8 +147,7 @@ io.on("connection", (socket) => {
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
           console.log(results);
-          //let res = handleresult(result)
-          //io.emit("send res",res)
+          tempTableSpots = handleresult(results, tempTableSpots);
         }
         const cardsToShow =
           roundsPlayed === 0
@@ -179,6 +182,26 @@ io.on("connection", (socket) => {
 
   socket.on("bettingAction", (action) => {
     //kanske tabort elseif elseif elsif
+    /* 
+    function example() {
+  return condition1 ? value1
+    : condition2 ? value2
+    : condition3 ? value3
+    : value4;
+}
+//
+function example() {
+  if (condition1) {
+    return value1;
+  } else if (condition2) {
+    return value2;
+  } else if (condition3) {
+    return value3;
+  } else {
+    return value4;
+  }
+}   
+    */
     let index = connectedUsers[socket.id];
     if (action === "fold") {
       tempTableSpots = handleFold(
@@ -190,8 +213,18 @@ io.on("connection", (socket) => {
     } else if (action === "check") {
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
+    } else if (action[0] === "call") {
+      let amount = Number(action[1]);
+      tempTableSpots[index].chips -= amount;
+      console.log(tempTableSpots[index].chips);
+      tempTableSpots[index].bettedAmount += amount;
+      currentBetAmount = tempTableSpots[index].bettedAmount;
+      index = (index + 1) % tempTableSpots.length;
+      sendBettingOption(tempTableSpots, index);
     } else if (typeof Number(action) === "number") {
       action = Number(action);
+      tempTableSpots[index].chips -= action;
+      console.log(tempTableSpots[index].chips);
       activePLayers = getActivePlayersAmount(tempTableSpots) - 1;
       tempTableSpots[index].bettedAmount += action;
       currentBetAmount = tempTableSpots[index].bettedAmount;
@@ -201,13 +234,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("roundStart", () => {
+    console.log(tableSpots);
     //check if 3 players
     //check if broke
     currentBetAmount = 40;
     let = board = [];
-    resetCarddeck();
+    resetCarddeck(); //verkar inte funka
     roundsPlayed = 0;
-    var tempTableSpots = tableSpots;
+    tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;
     for (var i = 0; i < tempTableSpots.length; i++) {
       var tableSpot = tempTableSpots[i];

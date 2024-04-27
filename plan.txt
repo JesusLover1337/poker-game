@@ -2,52 +2,15 @@ abc 123
 abcd 1234
 hej pass123
 
-
-min 3
-
-  var hand1 = {id: 1, cards: ['Ac', '5c']}; // tie
-  var hand2 = {id: 2, cards: ['Ad', '8d']}; // tie
-  var hand3 = {id: 3, cards: ['Kh', 'Jc']}; // win
-  var board = ['Th', '9h', 'Tc', '6c', 'Jh'];
-  var hands = [hand1, hand2, hand3];
-  var results = Ranker.orderHands(hands, board);
-
-  [
-  [
-    { id: 3,
-      ranking: 'two pair',
-      cards: [ ... ],
-      board: [ ... ],
-      playingCards: [ ... ],
-      description: 'two pair jacks and tens' }
-  ],
-  [ 
-    { id: 1,
-      ranking: 'pair',
-      cards: [ ... ],
-      board: [ ... ],
-      playingCards: [ ... ],
-      description: 'a pair of tens' },
-    { id: 2,
-      ranking: 'pair',
-      cards: [ ... ],
-      board: [ ... ],
-      playingCards: [ ... ],
-      description: 'a pair of tens' } 
-  ]
-]
-
-
-
+min 3 players
 
 BETTING!!?
-call is not raise dont restats cycle
+blinds är gratis!!??
 
 waiting lobby?
 overall ui
 nån text som visar vad man har kan inte se shit med images
 /*
-var Ranker = require('handranker-latest');
   var cards = ['3s', '3c', 'Ac', 'Ah', '3d'];
   var result = Ranker.getHand(cards); 
 */

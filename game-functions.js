@@ -142,6 +142,18 @@ function getActivePlayersHands(tableSpots) {
     .map(({ id, cards }) => ({ id, cards }));
 }
 
+function handleresult(results, table) {
+  let gamePot = 0;
+  table.forEach((tableSpot) => {
+    gamePot += tableSpot.bettedAmount;
+  });
+  let winners = results[0];
+  winners.forEach((winner) => {
+    table[winner.id].chips += gamePot / winners.length;
+  });
+  return table;
+}
+
 exports.handleFold = handleFold;
 exports.emptyHands = emptyHands;
 exports.getActivePlayersAmount = getActivePlayersAmount;
@@ -152,3 +164,4 @@ exports.getRandomCard = getRandomCard;
 exports.getActivePlayersHands = getActivePlayersHands;
 exports.resetCarddeck = resetCarddeck;
 exports.getIndexofDealer = getIndexofDealer;
+exports.handleresult = handleresult;

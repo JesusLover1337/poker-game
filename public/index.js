@@ -68,10 +68,9 @@ export function check(event) {
   event.preventDefault();
   bettingAction("check");
 }
-
 export function call(event) {
   event.preventDefault();
-  bettingAction(toBet);
+  bettingAction(["call", toBet]);
 }
 
 function bettingAction(action) {
@@ -94,6 +93,7 @@ socket.on(
   (username, maxValue, betAmountTable, betAmountPlayer) => {
     if (username === player) {
       toBet = betAmountPlayer - betAmountTable;
+      console.log(toBet);
       if (toBet > maxValue) {
         //allin type shi
       }
