@@ -59,12 +59,11 @@ const deck = [
   "Ks",
   "As",
 ];
-var tempCardDeck = deck;
+let tempCardDeck = deck;
 
 function resetCarddeck() {
   tempCardDeck = deck;
 }
-
 function getRandomCard() {
   let randomIndex = Math.floor(Math.random() * tempCardDeck.length);
   let randomCard = tempCardDeck.splice(randomIndex, 1)[0];
@@ -79,11 +78,11 @@ function assignRoles(table, playerAmount) {
     const playerIndex = (currentRoleIndex + i) % playerAmount;
     table[playerIndex].role = roles[i];
     table[playerIndex].bettedAmount = blinds[roles[i]];
+    table[playerIndex].chips -= blinds[roles[i]];
   }
   currentRoleIndex = (currentRoleIndex + 1) % playerAmount;
   return table;
 }
-
 function getIndexofDealer(table) {
   const index =
     table.findIndex(

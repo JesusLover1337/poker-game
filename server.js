@@ -216,7 +216,6 @@ function example() {
     } else if (action[0] === "call") {
       let amount = Number(action[1]);
       tempTableSpots[index].chips -= amount;
-      console.log(tempTableSpots[index].chips);
       tempTableSpots[index].bettedAmount += amount;
       currentBetAmount = tempTableSpots[index].bettedAmount;
       index = (index + 1) % tempTableSpots.length;
@@ -224,7 +223,6 @@ function example() {
     } else if (typeof Number(action) === "number") {
       action = Number(action);
       tempTableSpots[index].chips -= action;
-      console.log(tempTableSpots[index].chips);
       activePLayers = getActivePlayersAmount(tempTableSpots) - 1;
       tempTableSpots[index].bettedAmount += action;
       currentBetAmount = tempTableSpots[index].bettedAmount;
