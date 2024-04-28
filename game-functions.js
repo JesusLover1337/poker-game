@@ -59,10 +59,10 @@ const deck = [
   "Ks",
   "As",
 ];
-let tempCardDeck = deck;
+let tempCardDeck = [...deck];
 
 function resetCarddeck() {
-  tempCardDeck = deck;
+  tempCardDeck = [...deck];
 }
 function getRandomCard() {
   let randomIndex = Math.floor(Math.random() * tempCardDeck.length);

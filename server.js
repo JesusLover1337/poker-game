@@ -235,12 +235,12 @@ function example() {
   });
 
   socket.on("roundStart", () => {
-    /* console.log(tableSpots); */
+    /* io.emit("drawAllProfiles", data); */
     //check if 3 players
     //check if broke
     currentBetAmount = 40;
     let = board = [];
-    resetCarddeck(); //verkar inte funka
+    resetCarddeck();
     roundsPlayed = 0;
     tempTableSpots = tableSpots;
     let playerAmount = Object.keys(connectedUsers).length;

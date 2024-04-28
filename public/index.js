@@ -53,6 +53,7 @@ socket.on("loginsuccess", (name, playerAmount) => {
   togglelogin();
   player = name;
   if (playerAmount >= 3) {
+    //kankse funkar med 2 nu för att man är ju ganska cool
     socket.emit("roundStart");
   }
 });
@@ -107,6 +108,7 @@ socket.on(
         document.getElementById("call").style.display = "none";
       }
       document.getElementById("raiseAmount").setAttribute("max", maxValue);
+      document.getElementById("raiseAmount").setAttribute("min", toBet + 1);
       document.getElementById("raiseAmountDisplay").innerHTML =
         document.getElementById("raiseAmount").value;
     }

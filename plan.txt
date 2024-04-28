@@ -6,6 +6,7 @@ min 3 players
 
 handle inte ha tillräckligt med chip for call all in 
 tidy code 
+fnula på att tabort temptebales använder dom endå inte så por que no 
 
 waiting lobby?
 overall ui

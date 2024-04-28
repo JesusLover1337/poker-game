@@ -107,10 +107,64 @@ background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.0) 100%);
     border-radius: 10px;
     padding: 1.5%;
     position: absolute;
-    bottom: 5%;
+    bottom: 0%;
     left: 50%;
     transform: translateX(-50%);
     display: none;
     background: rgb(2,0,36);
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%);
 }
+.player-box {
+    width: fit-content;
+    height: auto;
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+#boxid0{
+    display: none;
+    position: absolute;
+    top: 15%;
+    left: 18%;
+}
+#boxid1{
+    display: none;
+    position: absolute;
+    bottom: 15%;
+    left: 18%;
+}
+#boxid2{
+    display: none;
+    position: absolute;
+    top: 15%;
+    right: 18%;
+
+}
+#boxid3{
+    display: none;
+    position: absolute;
+    bottom: 15%;
+    right: 18%;
+}
+#boxid4{
+    display: none;
+    position: absolute;
+    bottom: 11%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+  
+
+  .username {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .chips {
+    margin-bottom: 10px;
+  }
+  
+  .turn {
+    font-style: italic;
+  }
