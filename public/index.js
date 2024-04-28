@@ -85,7 +85,7 @@ export function updateTextInput(event) {
 
 export function raiseAction() {
   var amount = document.getElementById("raiseAmount").value;
-  bettingAction(amount);
+  bettingAction(["raise", amount]);
 }
 
 socket.on(
@@ -121,20 +121,21 @@ socket.on("drawTableX", (spot, cards, username) => {
     if (username === player) {
       socket.emit("roundStart");
     }
-  }
-  //ändra namn
-  const abc = {
-    flop: 0,
-    turn: 3,
-    river: 4,
-  };
-  //ändra namn
-  var x = abc[spot];
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i];
-    var indexCordinetds = i + x;
-    var cardCordinetds = tableCardsPos[indexCordinetds];
-    drawCard(cardToPos(card), cardCordinetds);
+  } else {
+    //ändra namn
+    const abc = {
+      flop: 0,
+      turn: 3,
+      river: 4,
+    };
+    //ändra namn
+    var x = abc[spot];
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      var indexCordinetds = i + x;
+      var cardCordinetds = tableCardsPos[indexCordinetds];
+      drawCard(cardToPos(card), cardCordinetds);
+    }
   }
 });
 

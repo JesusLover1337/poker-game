@@ -131,7 +131,11 @@ io.on("connection", (socket) => {
   });
 
   function sendBettingOption(table, index) {
-    if (table[index].gameStatus === "active") {
+    if (getActivePlayersAmount(tempTableSpots) === 1) {
+      let winnerIndex = table.findIndex((spot) => spot.gameStatus === "active");
+      tempTableSpots = handleresult([[{ id: winnerIndex }]], tempTableSpots);
+      io.emit("drawTableX", null, null, table[index].username);
+    } else if (table[index].gameStatus === "active") {
       if (activePLayers > 0) {
         activePLayers = activePLayers - 1;
         io.emit(
@@ -176,8 +180,7 @@ io.on("connection", (socket) => {
   function bettingRound(table) {
     //kan läggas i game-funcs
     var index = getIndexofDealer(table);
-    let bettingRoundResults = sendBettingOption(table, index);
-    return bettingRoundResults;
+    sendBettingOption(table, index);
   }
 
   socket.on("bettingAction", (action) => {
@@ -220,11 +223,11 @@ function example() {
       currentBetAmount = tempTableSpots[index].bettedAmount;
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
-    } else if (typeof Number(action) === "number") {
-      action = Number(action);
-      tempTableSpots[index].chips -= action;
+    } else if (action[0] === "raise") {
+      let amount = Number(action[1]);
+      tempTableSpots[index].chips -= amount;
       activePLayers = getActivePlayersAmount(tempTableSpots) - 1;
-      tempTableSpots[index].bettedAmount += action;
+      tempTableSpots[index].bettedAmount += amount;
       currentBetAmount = tempTableSpots[index].bettedAmount;
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
@@ -232,7 +235,7 @@ function example() {
   });
 
   socket.on("roundStart", () => {
-    console.log(tableSpots);
+    /* console.log(tableSpots); */
     //check if 3 players
     //check if broke
     currentBetAmount = 40;
