@@ -49,6 +49,18 @@ export function signup(event) {
   socket.emit("signup", username, email, password);
 }
 
+socket.on("sendHand", (hand, id) => {
+  console.log(hand);
+  document.getElementById(`turn${id}`).innerHTML = `${hand}`;
+});
+
+socket.on("drawAllProfiles", (id, username, chips, isUserTurn) => {
+  document.getElementById(`boxid${id}`).style.display = "inline-block";
+  document.getElementById(`user${id}`).innerHTML = `${username}`;
+  document.getElementById(`chips${id}`).innerHTML = `Chips: ${chips}`;
+  document.getElementById(`turn${id}`).innerHTML = `isTurn: ${isUserTurn}`;
+});
+
 socket.on("loginsuccess", (name, playerAmount) => {
   togglelogin();
   player = name;

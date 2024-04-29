@@ -131,6 +131,25 @@ io.on("connection", (socket) => {
   });
 
   function sendBettingOption(table, index) {
+    for (let i = 0; i < table.length; i++) {
+      const tableSpot = table[i];
+      if (tableSpot.username !== undefined) {
+        io.emit(
+          "drawAllProfiles",
+          i,
+          tableSpot.username,
+          tableSpot.chips,
+          index === i
+        );
+        if (roundsPlayed !== 0) {
+          var cards = [...board, ...tableSpot.hand];
+          var res = Ranker.getHand(cards);
+          io.to(
+            Object.keys(connectedUsers).find((key) => connectedUsers[key] === i)
+          ).emit("sendHand", res.ranking, i);
+        }
+      }
+    }
     if (getActivePlayersAmount(tempTableSpots) === 1) {
       let winnerIndex = table.findIndex((spot) => spot.gameStatus === "active");
       tempTableSpots = handleresult([[{ id: winnerIndex }]], tempTableSpots);
@@ -150,7 +169,7 @@ io.on("connection", (socket) => {
           console.log("game finish");
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
-          console.log(results);
+          /* console.log(results); */
           tempTableSpots = handleresult(results, tempTableSpots);
         }
         const cardsToShow =
@@ -235,7 +254,6 @@ function example() {
   });
 
   socket.on("roundStart", () => {
-    /* io.emit("drawAllProfiles", data); */
     //check if 3 players
     //check if broke
     currentBetAmount = 40;
