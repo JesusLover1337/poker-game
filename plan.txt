@@ -10,6 +10,8 @@ fnula på att tabort temptebales använder dom endå inte så por que no
 
 waiting lobby?
 overall ui
+dela upp "sendBettingOption" den är 60 rader
+drawCard i draw file
 
 
 https://www.npmjs.com/package/handranker-latest?activeTab=readme
