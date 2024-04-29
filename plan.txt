@@ -10,11 +10,7 @@ fnula på att tabort temptebales använder dom endå inte så por que no
 
 waiting lobby?
 overall ui
-nån text som visar vad man har kan inte se shit med images
-/*
-  var cards = ['3s', '3c', 'Ac', 'Ah', '3d'];
-  var result = Ranker.getHand(cards); 
-*/
+
 
 https://www.npmjs.com/package/handranker-latest?activeTab=readme
 
