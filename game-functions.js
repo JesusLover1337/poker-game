@@ -133,7 +133,7 @@ function getActivePlayersHands(tableSpots) {
     .map((spot, index) => ({
       id: index,
       cards: spot.hand,
-      isActive: spot.gameStatus === "active",
+      isActive: spot.gameStatus === "active" || spot.gameStatus === "allIn",
     }))
     .filter((spot) => spot.isActive)
     .map(({ id, cards }) => ({ id, cards }));

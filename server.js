@@ -145,7 +145,9 @@ io.on("connection", (socket) => {
       }
     }
     if (getActivePlayersAmount(tempTableSpots) === 1) {
-      let winnerIndex = table.findIndex((spot) => spot.gameStatus === "active");
+      let winnerIndex = table.findIndex(
+        (spot) => spot.gameStatus === "active" || spot.gameStatus === "allIn"
+      );
       tempTableSpots = handleresult([[{ id: winnerIndex }]], tempTableSpots);
       io.emit("drawTableX", null, null, table[index].username);
     } else if (table[index].gameStatus === "active") {
@@ -197,27 +199,6 @@ io.on("connection", (socket) => {
   }
 
   socket.on("bettingAction", (action) => {
-    //kanske tabort elseif elseif elsif
-    /* 
-    function example() {
-  return condition1 ? value1
-    : condition2 ? value2
-    : condition3 ? value3
-    : value4;
-}
-//
-function example() {
-  if (condition1) {
-    return value1;
-  } else if (condition2) {
-    return value2;
-  } else if (condition3) {
-    return value3;
-  } else {
-    return value4;
-  }
-}   
-    */
     let index = connectedUsers[socket.id];
     if (action === "fold") {
       tempTableSpots = handleFold(
@@ -229,17 +210,15 @@ function example() {
     } else if (action === "check") {
       index = (index + 1) % tempTableSpots.length;
       sendBettingOption(tempTableSpots, index);
-    } else if (action[0] === "call") {
+    } else if (action[0] === "call" || action[0] === "raise") {
       let amount = Number(action[1]);
       tempTableSpots[index].chips -= amount;
-      tempTableSpots[index].bettedAmount += amount;
-      currentBetAmount = tempTableSpots[index].bettedAmount;
-      index = (index + 1) % tempTableSpots.length;
-      sendBettingOption(tempTableSpots, index);
-    } else if (action[0] === "raise") {
-      let amount = Number(action[1]);
-      tempTableSpots[index].chips -= amount;
-      activePLayers = getActivePlayersAmount(tempTableSpots) - 1;
+      if (tempTableSpots[index].chips === 0) {
+        tempTableSpots[index].gameStatus = "allIn";
+      }
+      if (action[0] === "raise") {
+        activePLayers = getActivePlayersAmount(tempTableSpots) - 1;
+      }
       tempTableSpots[index].bettedAmount += amount;
       currentBetAmount = tempTableSpots[index].bettedAmount;
       index = (index + 1) % tempTableSpots.length;

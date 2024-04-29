@@ -55,10 +55,13 @@ socket.on("sendHand", (hand, id) => {
 });
 
 socket.on("drawAllProfiles", (id, username, chips, isUserTurn) => {
+  const colorToDisplay = isUserTurn === true ? "green" : "red";
   document.getElementById(`boxid${id}`).style.display = "inline-block";
   document.getElementById(`user${id}`).innerHTML = `${username}`;
   document.getElementById(`chips${id}`).innerHTML = `Chips: ${chips}`;
-  document.getElementById(`turn${id}`).innerHTML = `isTurn: ${isUserTurn}`;
+  document.getElementById(
+    `boxid${id}`
+  ).style.backgroundColor = `${colorToDisplay}`;
 });
 
 socket.on("loginsuccess", (name, playerAmount) => {
@@ -107,11 +110,10 @@ socket.on(
     if (username === player) {
       toBet = betAmountPlayer - betAmountTable;
       console.log(toBet);
-      if (toBet > maxValue) {
-        //allin type shi
-      }
       bettingActions.style.display = "block";
-      if (toBet > 0) {
+      /* if (toBet > maxValue) {
+        document.getElementById("call").innerHTML = `All in: ${maxValue}`;
+      } else  */ if (toBet > 0) {
         document.getElementById("check").style.display = "none";
         document.getElementById("call").style.display = "inline-block";
         document.getElementById("call").innerHTML = `Call: ${toBet}`;
