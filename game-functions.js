@@ -4,7 +4,6 @@ const blinds = {
   BigBlind: 40,
   Dealer: 0,
 };
-
 const deck = [
   "2h",
   "3h",
@@ -129,7 +128,6 @@ function handleFold(user, table) {
   }
   return table;
 }
-
 function getActivePlayersHands(tableSpots) {
   return tableSpots
     .map((spot, index) => ({
@@ -140,7 +138,6 @@ function getActivePlayersHands(tableSpots) {
     .filter((spot) => spot.isActive)
     .map(({ id, cards }) => ({ id, cards }));
 }
-
 function handleresult(results, table) {
   let gamePot = 0;
   table.forEach((tableSpot) => {
