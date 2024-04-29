@@ -132,17 +132,11 @@ io.on("connection", (socket) => {
 
   function sendBettingOption(table, index) {
     for (let i = 0; i < table.length; i++) {
-      const tableSpot = table[i];
-      if (tableSpot.username !== undefined) {
-        io.emit(
-          "drawAllProfiles",
-          i,
-          tableSpot.username,
-          tableSpot.chips,
-          index === i
-        );
+      const Spot = table[i];
+      if (Spot.username !== undefined) {
+        io.emit("drawAllProfiles", i, Spot.username, Spot.chips, index === i);
         if (roundsPlayed !== 0) {
-          var cards = [...board, ...tableSpot.hand];
+          var cards = [...board, ...Spot.hand];
           var res = Ranker.getHand(cards);
           io.to(
             Object.keys(connectedUsers).find((key) => connectedUsers[key] === i)
