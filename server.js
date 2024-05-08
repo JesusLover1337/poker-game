@@ -144,7 +144,12 @@ io.on("connection", (socket) => {
         }
       }
     }
-    if (getActivePlayersAmount(tempTableSpots) === 1) {
+    if (
+      getActivePlayersAmount(tempTableSpots) +
+        tempTableSpots.filter((tableSpot) => tableSpot.gameStatus === "allIn")
+          .length ===
+      1
+    ) {
       let winnerIndex = table.findIndex(
         (spot) => spot.gameStatus === "active" || spot.gameStatus === "allIn"
       );
@@ -165,7 +170,9 @@ io.on("connection", (socket) => {
           console.log("game finish");
           let hands = getActivePlayersHands(tempTableSpots);
           var results = Ranker.orderHands(hands, board);
-          /* console.log(results); */
+          console.log(results);
+          console.log(tempTableSpots);
+
           tempTableSpots = handleresult(results, tempTableSpots);
         }
         const cardsToShow =
@@ -227,8 +234,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("roundStart", () => {
+    for (var i = 0; i < tempTableSpots.length; i++) {
+      var tableSpot = tempTableSpots[i];
+      if (tableSpot.chips < 1) {
+        removePlayerFromTable(tableSpot.username);
+      }
+    }
     //check if 3 players
-    //check if broke
     currentBetAmount = 40;
     let = board = [];
     resetCarddeck();

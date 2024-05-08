@@ -144,6 +144,7 @@ function handleresult(results, table) {
     gamePot += tableSpot.bettedAmount;
   });
   let winners = results[0];
+
   winners.forEach((winner) => {
     table[winner.id].chips += gamePot / winners.length;
   });

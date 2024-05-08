@@ -111,15 +111,22 @@ socket.on(
       toBet = betAmountPlayer - betAmountTable;
       console.log(toBet);
       bettingActions.style.display = "block";
-      /* if (toBet > maxValue) {
-        document.getElementById("call").innerHTML = `All in: ${maxValue}`;
-      } else  */ if (toBet > 0) {
+      if (toBet > maxValue) {
+        document.getElementById("check").style.display = "none";
+        document.getElementById("call").style.display = "none";
+        document.getElementById("raiseAmount").style.display = "none";
+        document.getElementById("raise").style.display = "none";
+      } else if (toBet > 0) {
+        document.getElementById("raiseAmount").style.display = "inline-block";
+        document.getElementById("raise").style.display = "inline-block";
         document.getElementById("check").style.display = "none";
         document.getElementById("call").style.display = "inline-block";
         document.getElementById("call").innerHTML = `Call: ${toBet}`;
       } else {
         document.getElementById("check").style.display = "inline-block";
         document.getElementById("call").style.display = "none";
+        document.getElementById("raiseAmount").style.display = "inline-block";
+        document.getElementById("raise").style.display = "inline-block";
       }
       document.getElementById("raiseAmount").setAttribute("max", maxValue);
       document.getElementById("raiseAmount").setAttribute("min", toBet + 1);
