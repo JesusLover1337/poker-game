@@ -172,8 +172,8 @@ io.on("connection", (socket) => {
           var results = Ranker.orderHands(hands, board);
           console.log(results);
           console.log(tempTableSpots);
-
           tempTableSpots = handleresult(results, tempTableSpots);
+          io.emit("displayResults", tempTableSpots, results[0]);
         }
         const cardsToShow =
           roundsPlayed === 0
@@ -204,7 +204,6 @@ io.on("connection", (socket) => {
     var index = getIndexofDealer(table);
     sendBettingOption(table, index);
   }
-
   socket.on("bettingAction", (action) => {
     let index = connectedUsers[socket.id];
     if (action === "fold") {
@@ -239,6 +238,8 @@ io.on("connection", (socket) => {
       if (tableSpot.chips < 1) {
         removePlayerFromTable(tableSpot.username);
       }
+    }
+    if (getActivePlayersAmount(tempTableSpots) < 3) {
     }
     //check if 3 players
     currentBetAmount = 40;

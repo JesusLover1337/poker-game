@@ -104,6 +104,38 @@ export function raiseAction() {
   bettingAction(["raise", amount]);
 }
 
+function sleep(ms = 0) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+socket.on("displayResults", (table, result) => {
+  ctx.font = "100px Arial";
+  ctx.fillStyle = "red";
+  ctx.textAlign = "center";
+  let winners = undefined;
+  result.forEach((player) => {
+    let name = table[player.id].username;
+    if (winners === undefined) {
+      winners = `${name}`;
+    } else {
+      winners += `& ${name}`;
+    }
+  });
+  ctx.textBaseline = "bottom";
+  ctx.fillText(`${winners}`, canvas_width / 2, canvas_height / 2);
+  ctx.textBaseline = "top";
+  ctx.fillText("IS THE WINNER!!", canvas_width / 2, canvas_height / 2);
+});
+
+async function endGame(username) {
+  bettingActions.style.display = "none";
+  await sleep(5555);
+  ctx.clearRect(0, 0, canvas_width, canvas_height);
+  if (username === player) {
+    socket.emit("roundStart");
+  }
+}
+
 socket.on(
   "bettingRoundAction",
   (username, maxValue, betAmountTable, betAmountPlayer) => {
@@ -138,21 +170,15 @@ socket.on(
 
 socket.on("drawTableX", (spot, cards, username) => {
   if (spot === null) {
-    bettingActions.style.display = "none";
-    //delay type shi to show res
-    ctx.clearRect(0, 0, canvas_width, canvas_height);
-    if (username === player) {
-      socket.emit("roundStart");
-    }
+    endGame(username);
   } else {
-    //ändra namn
-    const abc = {
+    const tableIndex = {
       flop: 0,
       turn: 3,
       river: 4,
     };
     //ändra namn
-    var x = abc[spot];
+    var x = tableIndex[spot];
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
       var indexCordinetds = i + x;
