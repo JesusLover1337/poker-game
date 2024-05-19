@@ -275,9 +275,7 @@ io.on("connection", (socket) => {
       let = board = [];
       resetCarddeck();
       roundsPlayed = 0;
-
       let playerAmount = Object.keys(connectedUsers).length;
-
       tempTableSpots = assignRoles(tempTableSpots, playerAmount);
       tempTableSpots = emptyHands(tempTableSpots);
       tempTableSpots = dealCard(tempTableSpots);

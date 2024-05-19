@@ -93,7 +93,6 @@ socket.on("loginsuccess", (name, playerAmount) => {
   togglelogin();
   player = name;
   if (playerAmount >= 3) {
-    //kankse funkar med 2 nu för att man är ju ganska cool
     socket.emit("roundStart");
   }
 });
@@ -144,7 +143,7 @@ function sleep(ms = 0) {
 }
 
 socket.on("displayResults", (table, result) => {
-  ctx.font = "100px Arial";
+  ctx.font = "50px Arial";
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
   let winners = undefined;
@@ -212,11 +211,10 @@ socket.on("drawTableX", (spot, cards, username) => {
       turn: 3,
       river: 4,
     };
-    //ändra namn
-    var x = tableIndex[spot];
+    var startValue = tableIndex[spot];
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
-      var indexCordinetds = i + x;
+      var indexCordinetds = i + startValue;
       var cardCordinetds = tableCardsPos[indexCordinetds];
       drawCard(cardToPos(card), cardCordinetds);
     }

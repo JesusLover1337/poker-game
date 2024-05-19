@@ -1,26 +1,3 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const canvas_width = (canvas.width = 800);
-const canvas_height = (canvas.height = 500);
-const cardDeck = document.getElementById("cardDeck");
-const cardHeight = 74.5;
-const cardWidth = 51.5;
-
-//drawCard(cardToPos(card), {x:0,y:0});
-/* function drawCard(pos, location) {
-  ctx.drawImage(
-    cardDeck,
-    cardWidth * pos.PosX,
-    cardHeight * pos.PosY,
-    cardWidth,
-    cardHeight,
-    location.x,
-    location.y,
-    cardWidth / 1.5,
-    cardHeight / 1.5
-  );
-} */
-
 class Card {
   constructor(value, suit) {
     this.value = value;
@@ -34,7 +11,6 @@ class Card {
     };
   }
 }
-
 class Diamond extends Card {
   constructor(value) {
     super(value, 1);
@@ -47,7 +23,6 @@ class Diamond extends Card {
     };
   }
 }
-
 class Heart extends Card {
   constructor(value) {
     super(value, 2);
@@ -60,7 +35,6 @@ class Heart extends Card {
     };
   }
 }
-
 class Club extends Card {
   constructor(value) {
     super(value, 0);
@@ -73,7 +47,6 @@ class Club extends Card {
     };
   }
 }
-
 class Spade extends Card {
   constructor(value) {
     super(value, 3);
@@ -85,6 +58,7 @@ class Spade extends Card {
     };
   }
 }
+
 function getKeyByValue(object, value) {
   for (let prop in object) {
     if (object.hasOwnProperty(prop)) {
@@ -123,7 +97,6 @@ export function cardToPos(card) {
   }
   return cardPos.getCardPos();
 }
-
 export const tableCardsPos = [
   {
     x: 306,
@@ -146,7 +119,3 @@ export const tableCardsPos = [
     y: 232,
   },
 ];
-
-/* exports.drawCard = drawCard; */
-// exports.cardToPos = cardToPos;
-// exports.tableCardsPos = tableCardsPos;
