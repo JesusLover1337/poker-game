@@ -55,6 +55,7 @@ socket.on("sendHand", (hand, id) => {
 });
 
 socket.on("drawAllProfiles", (id, username, chips, isUserTurn) => {
+  document.getElementById(`boxid${id}`).style.display = "inline-block";
   const colorToDisplay = isUserTurn === true ? "green" : "red";
   document.getElementById(`boxid${id}`).style.display = "inline-block";
   document.getElementById(`user${id}`).innerHTML = `${username}`;
@@ -62,6 +63,10 @@ socket.on("drawAllProfiles", (id, username, chips, isUserTurn) => {
   document.getElementById(
     `boxid${id}`
   ).style.backgroundColor = `${colorToDisplay}`;
+});
+
+socket.on("removeProfile", (id) => {
+  document.getElementById(`boxid${id}`).style.display = "none";
 });
 
 socket.on("playerJoined", (players) => {

@@ -139,11 +139,12 @@ io.on("connection", (socket) => {
   });
   socket.on("logout", (player) => {
     removePlayerFromTable(player);
+    io.emit("removeProfile", connectedUsers[socket.id]);
     delete connectedUsers[socket.id];
     io.emit("playerJoined", Object.keys(connectedUsers).length);
   });
 
-  function sendBettingOption(table, index) {
+  function drawProfiles(table, index) {
     for (let i = 0; i < table.length; i++) {
       const Spot = table[i];
       if (Spot.username != undefined) {
@@ -157,17 +158,31 @@ io.on("connection", (socket) => {
         }
       }
     }
-    if (
-      getActivePlayersAmount(tempTableSpots) +
-        tempTableSpots.filter((tableSpot) => tableSpot.gameStatus === "allIn")
-          .length ===
-      1
-    ) {
-      let winnerIndex = table.findIndex(
-        (spot) => spot.gameStatus === "active" || spot.gameStatus === "allIn"
-      );
-      tempTableSpots = handleresult([[{ id: winnerIndex }]], tempTableSpots);
-      io.emit("drawTableX", null, null, table[index].username);
+  }
+
+  function handleOnePlayerLeft(table, index) {
+    let winnerIndex = table.findIndex(
+      (spot) => spot.gameStatus === "active" || spot.gameStatus === "allIn"
+    );
+    tempTableSpots = handleresult([[{ id: winnerIndex }]], tempTableSpots);
+    io.emit("drawTableX", null, null, table[index].username);
+  }
+
+  function getAndDisplayResults(board) {
+    let hands = getActivePlayersHands(tempTableSpots);
+    var results = Ranker.orderHands(hands, board);
+    tempTableSpots = handleresult(results, tempTableSpots);
+    io.emit("displayResults", tempTableSpots, results[0]);
+  }
+
+  function sendBettingOption(table, index) {
+    drawProfiles(table, index);
+    let activePlayers = getActivePlayersAmount(tempTableSpots);
+    let allInPlayers = tempTableSpots.filter(
+      (tableSpot) => tableSpot.gameStatus === "allIn"
+    ).length;
+    if (activePlayers + allInPlayers === 1) {
+      handleOnePlayerLeft(table, index);
     } else if (table[index].gameStatus === "active") {
       if (activePLayers > 0) {
         activePLayers = activePLayers - 1;
@@ -180,13 +195,7 @@ io.on("connection", (socket) => {
         );
       } else if (activePLayers === 0) {
         if (roundsPlayed === 3) {
-          console.log("game finish");
-          let hands = getActivePlayersHands(tempTableSpots);
-          var results = Ranker.orderHands(hands, board);
-          console.log(results);
-          console.log(tempTableSpots);
-          tempTableSpots = handleresult(results, tempTableSpots);
-          io.emit("displayResults", tempTableSpots, results[0]);
+          getAndDisplayResults(board);
         }
         const cardsToShow =
           roundsPlayed === 0
@@ -213,7 +222,6 @@ io.on("connection", (socket) => {
     }
   }
   function bettingRound(table) {
-    //kan läggas i game-funcs
     var index = getIndexofDealer(table);
     sendBettingOption(table, index);
   }
@@ -259,7 +267,6 @@ io.on("connection", (socket) => {
         tableSpot.gameStatus = "active";
       }
     }
-    console.log(getActivePlayersAmount(tempTableSpots));
     if (getActivePlayersAmount(tempTableSpots) < 3) {
       io.emit("playerJoined", Object.keys(connectedUsers).length);
     } else {
