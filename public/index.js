@@ -131,7 +131,7 @@ socket.on("displayResults", (table, result) => {
     if (winners === undefined) {
       winners = `${name}`;
     } else {
-      winners += `& ${name}`;
+      winners += ` & ${name}`;
     }
   });
   ctx.textBaseline = "bottom";

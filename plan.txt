@@ -5,11 +5,11 @@ hej pass123
 min 3 players
 hanterar inte att inte ha tillräckligt med chip för call
 
-handle inte ha tillräckligt med chip for call all in 
+
 tidy code 
 fnula på att tabort temptebales använder dom endå inte så por que no 
 
-waiting lobby?
+
 overall ui
 dela upp "sendBettingOption" den är 60 rader
 drawCard i draw file

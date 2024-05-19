@@ -88,6 +88,7 @@ function addAcount(name, email, password, chips) {
 
 io.on("connection", (socket) => {
   socket.on("login", (username, password) => {
+    let loginSuccess = false;
     if (!username) username = undefined;
     if (!password) password = undefined;
     con.query("SELECT * FROM acounts", function (err, results, fields) {
@@ -95,14 +96,21 @@ io.on("connection", (socket) => {
       results.forEach((account) => {
         if (username === account.name && password === account.password) {
           loginSuccess = true;
-          console.log("user exists");
-          addPlayerToTable(account, socket.id);
-          socket.emit(
-            "loginsuccess",
-            account.name,
-            Object.keys(connectedUsers).length
-          );
-          io.emit("playerJoined", Object.keys(connectedUsers).length);
+          tableSpots.forEach((spot) => {
+            if (username === spot.username) {
+              loginSuccess = false;
+            }
+          });
+          if (loginSuccess === true) {
+            console.log("user exists");
+            addPlayerToTable(account, socket.id);
+            socket.emit(
+              "loginsuccess",
+              account.name,
+              Object.keys(connectedUsers).length
+            );
+            io.emit("playerJoined", Object.keys(connectedUsers).length);
+          }
         }
       });
     });
@@ -135,7 +143,7 @@ io.on("connection", (socket) => {
   function sendBettingOption(table, index) {
     for (let i = 0; i < table.length; i++) {
       const Spot = table[i];
-      if (Spot.username !== undefined) {
+      if (Spot.username != undefined) {
         io.emit("drawAllProfiles", i, Spot.username, Spot.chips, index === i);
         if (roundsPlayed !== 0) {
           var cards = [...board, ...Spot.hand];
@@ -241,33 +249,37 @@ io.on("connection", (socket) => {
         removePlayerFromTable(tableSpot.username);
       }
     }
-    if (getActivePlayersAmount(tempTableSpots) < 3) {
-    }
-    //check if 3 players
-    currentBetAmount = 40;
-    let = board = [];
-    resetCarddeck();
-    roundsPlayed = 0;
     tempTableSpots = tableSpots;
-    let playerAmount = Object.keys(connectedUsers).length;
     for (var i = 0; i < tempTableSpots.length; i++) {
       var tableSpot = tempTableSpots[i];
       if (tableSpot.username != undefined) {
         tableSpot.gameStatus = "active";
       }
     }
-    tempTableSpots = assignRoles(tempTableSpots, playerAmount);
-    tempTableSpots = emptyHands(tempTableSpots);
-    tempTableSpots = dealCard(tempTableSpots);
-    tempTableSpots = dealCard(tempTableSpots);
-    io.emit("drawAllBackside", tempTableSpots);
-    for (const id in connectedUsers) {
-      if (Object.hasOwnProperty.call(connectedUsers, id)) {
-        const element = connectedUsers[id];
-        io.to(id).emit("drawHand", tempTableSpots[element]);
+    console.log(getActivePlayersAmount(tempTableSpots));
+    if (getActivePlayersAmount(tempTableSpots) < 3) {
+      io.emit("playerJoined", Object.keys(connectedUsers).length);
+    } else {
+      currentBetAmount = 40;
+      let = board = [];
+      resetCarddeck();
+      roundsPlayed = 0;
+
+      let playerAmount = Object.keys(connectedUsers).length;
+
+      tempTableSpots = assignRoles(tempTableSpots, playerAmount);
+      tempTableSpots = emptyHands(tempTableSpots);
+      tempTableSpots = dealCard(tempTableSpots);
+      tempTableSpots = dealCard(tempTableSpots);
+      io.emit("drawAllBackside", tempTableSpots);
+      for (const id in connectedUsers) {
+        if (Object.hasOwnProperty.call(connectedUsers, id)) {
+          const element = connectedUsers[id];
+          io.to(id).emit("drawHand", tempTableSpots[element]);
+        }
       }
+      activePLayers = getActivePlayersAmount(tempTableSpots);
+      bettingRound(tempTableSpots);
     }
-    activePLayers = getActivePlayersAmount(tempTableSpots);
-    bettingRound(tempTableSpots);
   });
 });
