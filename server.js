@@ -19,7 +19,6 @@ const {
   getIndexofDealer,
   handleresult,
 } = require("./game-functions");
-const {} = require("./server-functions");
 
 var con = mysql.createConnection({
   host: "localhost",
