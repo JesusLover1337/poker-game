@@ -139,7 +139,8 @@ io.on("connection", (socket) => {
   });
   socket.on("logout", (player) => {
     removePlayerFromTable(player);
-    io.emit("removeProfile", connectedUsers[socket.id]);
+    socket.emit("removeProfile", "all"); // revmoves all from logged out player (profile)
+    io.emit("removeProfile", connectedUsers[socket.id]); // removes logged out player from rest (profile)
     delete connectedUsers[socket.id];
     io.emit("playerJoined", Object.keys(connectedUsers).length);
   });

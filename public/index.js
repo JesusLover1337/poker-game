@@ -66,7 +66,13 @@ socket.on("drawAllProfiles", (id, username, chips, isUserTurn) => {
 });
 
 socket.on("removeProfile", (id) => {
-  document.getElementById(`boxid${id}`).style.display = "none";
+  if (id === "all") {
+    for (let index = 0; index < 4; index++) {
+      document.getElementById(`boxid${index}`).style.display = "none";
+    }
+  } else {
+    document.getElementById(`boxid${id}`).style.display = "none";
+  }
 });
 
 socket.on("playerJoined", (players) => {
