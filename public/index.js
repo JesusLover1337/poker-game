@@ -78,6 +78,7 @@ socket.on("playerJoined", (players) => {
 });
 
 socket.on("loginsuccess", (name, playerAmount) => {
+  document.getElementById("error-message-login").style.display = "none";
   togglelogin();
   player = name;
   if (playerAmount >= 3) {
@@ -85,8 +86,18 @@ socket.on("loginsuccess", (name, playerAmount) => {
     socket.emit("roundStart");
   }
 });
+
+socket.on("loginunsuccessful", () => {
+  document.getElementById("error-message-login").style.display = "block";
+});
+
 socket.on("signinsuccess", () => {
+  document.getElementById("error-message-signup").style.display = "none";
   toggleForm();
+});
+
+socket.on("signinunsuccessful", () => {
+  document.getElementById("error-message-signup").style.display = "block";
 });
 
 export function fold(event) {

@@ -101,7 +101,7 @@ io.on("connection", (socket) => {
               loginSuccess = false;
             }
           });
-          if (loginSuccess === true) {
+          if (loginSuccess) {
             console.log("user exists");
             addPlayerToTable(account, socket.id);
             socket.emit(
@@ -112,11 +112,14 @@ io.on("connection", (socket) => {
             io.emit("playerJoined", Object.keys(connectedUsers).length);
           }
         }
+        if (!loginSuccess) {
+          socket.emit("loginunsuccessful");
+        }
       });
     });
   });
   socket.on("signup", (username, email, password) => {
-    var startingchips = 10000;
+    var startingchips = 25000;
     var uniqueName = true;
     con.query("SELECT * FROM acounts", function (err, results, fields) {
       if (err) throw err;
@@ -130,7 +133,7 @@ io.on("connection", (socket) => {
         addAcount(username, email, password, startingchips);
         socket.emit("signinsuccess", account.name);
       } else {
-        console.log("name already exist");
+        socket.emit("signinunsuccessful");
       }
     });
   });

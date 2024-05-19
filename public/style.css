@@ -199,3 +199,13 @@ background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.0) 100%);
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+#error-message-login{
+    color: red;
+    display: none; 
+}
+
+#error-message-signup{
+    color: red;
+    display: none; 
+}
