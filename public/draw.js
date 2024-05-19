@@ -86,7 +86,6 @@ export function cardToPos(card) {
   ans = Number(ans);
   let cardPos = null;
   if (card[1] === "d") {
-    // skriv om detta så det ser vettigt ut
     cardPos = new Diamond(ans);
   } else if (card[1] === "h") {
     cardPos = new Heart(ans);
