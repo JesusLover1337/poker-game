@@ -102,6 +102,7 @@ io.on("connection", (socket) => {
             account.name,
             Object.keys(connectedUsers).length
           );
+          io.emit("playerJoined", Object.keys(connectedUsers).length);
         }
       });
     });
@@ -128,6 +129,7 @@ io.on("connection", (socket) => {
   socket.on("logout", (player) => {
     removePlayerFromTable(player);
     delete connectedUsers[socket.id];
+    io.emit("playerJoined", Object.keys(connectedUsers).length);
   });
 
   function sendBettingOption(table, index) {

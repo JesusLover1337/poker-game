@@ -64,6 +64,19 @@ socket.on("drawAllProfiles", (id, username, chips, isUserTurn) => {
   ).style.backgroundColor = `${colorToDisplay}`;
 });
 
+socket.on("playerJoined", (players) => {
+  if (player != undefined) {
+    document.getElementById("loading-screen").style.display = "inline-block";
+  } else {
+    document.getElementById("loading-screen").style.display = "none";
+  }
+  document.getElementById("player-count").innerText = `${players} av 3`;
+
+  if (players >= 3) {
+    document.getElementById("loading-screen").style.display = "none";
+  }
+});
+
 socket.on("loginsuccess", (name, playerAmount) => {
   togglelogin();
   player = name;
@@ -198,12 +211,14 @@ export function toggleForm() {
   }
 }
 export function logout() {
+  let tempPlayername = player;
   loginForm.style.display = "block";
   playingTable.style.display = "none";
   canvas.style.display = "none";
   logOutButton.style.display = "none";
-  console.log(player);
-  socket.emit("logout", player);
+  player = undefined;
+  console.log(tempPlayername);
+  socket.emit("logout", tempPlayername);
 }
 function togglelogin() {
   loginForm.style.display = "none";
