@@ -99,22 +99,22 @@ export function cardToPos(card) {
 export const tableCardsPos = [
   {
     x: 306,
-    y: 232,
+    y: 225,
   },
   {
     x: 345,
-    y: 232,
+    y: 225,
   },
   {
     x: 383,
-    y: 232,
+    y: 225,
   },
   {
     x: 422,
-    y: 232,
+    y: 225,
   },
   {
     x: 461,
-    y: 232,
+    y: 225,
   },
 ];
