@@ -1,4 +1,3 @@
-//betted amout? elr nåt sätt att hantera hur mycket ligger på bordet
 var tableSpots = [
   {
     username: undefined,

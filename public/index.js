@@ -14,7 +14,7 @@ const canvas_height = (canvas.height = 500);
 let player = undefined;
 let toBet;
 
-import { cardToPos, tableCardsPos } from "./draw.js";
+import { cardToPos, tableCardsPos } from "./draw-functions.js";
 
 function drawCard(pos, location) {
   ctx.drawImage(
@@ -50,7 +50,6 @@ export function signup(event) {
 }
 
 socket.on("sendHand", (hand, id) => {
-  console.log(hand);
   document.getElementById(`turn${id}`).innerHTML = `${hand}`;
 });
 
@@ -82,7 +81,6 @@ socket.on("playerJoined", (players) => {
     document.getElementById("loading-screen").style.display = "none";
   }
   document.getElementById("player-count").innerText = `${players} av 3`;
-
   if (players >= 3) {
     document.getElementById("loading-screen").style.display = "none";
   }
@@ -175,7 +173,6 @@ socket.on(
   (username, maxValue, betAmountTable, betAmountPlayer) => {
     if (username === player) {
       toBet = betAmountPlayer - betAmountTable;
-      console.log(toBet);
       bettingActions.style.display = "block";
       if (toBet > maxValue) {
         document.getElementById("check").style.display = "none";
@@ -237,7 +234,6 @@ export function logout() {
   canvas.style.display = "none";
   logOutButton.style.display = "none";
   player = undefined;
-  console.log(tempPlayername);
   socket.emit("logout", tempPlayername);
 }
 function togglelogin() {

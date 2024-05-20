@@ -67,8 +67,6 @@ background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.0) 100%);
     text-decoration: underline;
 }
 
-
-
 #cardDeck{
     display: none;
 }
@@ -158,23 +156,22 @@ background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.0) 100%);
     border-radius: 10px;
     transform: translateX(-50%);
 }
-  
 
-  .username {
+.username {
     font-weight: bold;
     margin-bottom: 10px;
     text-decoration: underline;
-  }
-  
-  .chips {
-    margin-bottom: 10px;
-  }
-  
-  .turn {
-    font-style: italic;
-  }
+}
 
-  #loading-screen {
+.chips {
+    margin-bottom: 10px;
+}
+
+.turn {
+    font-style: italic;
+}
+
+#loading-screen {
     display: none;
     z-index: 10;
     position:fixed;

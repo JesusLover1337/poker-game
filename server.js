@@ -64,7 +64,6 @@ function removePlayerFromTable(player) {
   for (var i = 0; i < tableSpots.length; i++) {
     var tableSpot = tableSpots[i];
     if (tableSpot.username === player) {
-      console.log(tableSpot);
       var sql = `UPDATE acounts SET chips = '${tableSpot.chips}' WHERE name = '${tableSpot.username}'`;
       con.query(sql, function (err, result) {
         if (err) throw err;
@@ -101,7 +100,6 @@ io.on("connection", (socket) => {
             }
           });
           if (loginSuccess) {
-            console.log("user exists");
             addPlayerToTable(account, socket.id);
             socket.emit(
               "loginsuccess",
@@ -123,7 +121,6 @@ io.on("connection", (socket) => {
     con.query("SELECT * FROM acounts", function (err, results, fields) {
       if (err) throw err;
       results.forEach((account) => {
-        console.log(account.name);
         if (username === account.name) {
           uniqueName = false;
         }

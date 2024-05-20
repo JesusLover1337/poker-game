@@ -1,4 +1,5 @@
 let currentRoleIndex = 0;
+
 const blinds = {
   SmallBlind: 20,
   BigBlind: 40,
